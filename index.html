@@ -136,7 +136,6 @@
 
         .quiz-section { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         
-        /* СТИЛІ ДЛЯ ФІНАЛЬНИХ СЛАЙДІВ */
         .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1100px; margin-top: 30px; }
         .final-card {
             background: var(--glass-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border);
@@ -311,7 +310,7 @@
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Велика упаковка</button>
                 </div>
                 <div class="feedback-box"></div>
-                <div class="scroll-hint">Чудово! Гортай далі для висновків ↓</div>
+                <div class="scroll-hint">Гортай далі для висновків ↓</div>
             </div>
         </section>
 
@@ -333,7 +332,6 @@
                         <p>Розкажіть друзям про проблему. Чим більше людей відмовляться від фосфатів, тим швидше очистяться річки.</p>
                     </div>
                 </div>
-                <div class="scroll-hint" style="display:block;">Гортай до фіналу ↓</div>
             </div>
         </section>
 
@@ -405,7 +403,6 @@
             if (qNum < 6) {
                 document.getElementById(`q${qNum + 1}`).style.display = 'flex';
             } else if (qNum === 6) {
-                // Відкриваємо фінальні слайди
                 document.getElementById('solution-slide').style.display = 'flex';
                 document.getElementById('final-slide').style.display = 'flex';
             }
