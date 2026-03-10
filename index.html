@@ -14,6 +14,8 @@
             --text-main: #e6f1ff;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --correct: #00ff88;
+            --wrong: #ff4d4d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,8 +26,14 @@
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
+        }
+
+        /* Стилі для скрол-снапу (вимкнемо його для тесту пізніше через JS) */
+        .snap-container {
+            height: 100vh;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
         }
 
         .ocean-bg {
@@ -35,35 +43,25 @@
             background: radial-gradient(circle at 50% 0%, #0a243d 0%, #010811 100%);
         }
 
-        .sun-rays {
-            position: absolute;
-            top: -30%; left: 50%; width: 200%; height: 200%;
-            background: repeating-conic-gradient(from 0deg at 50% 0%, 
-                transparent 0deg, 
-                rgba(0, 212, 255, 0.03) 10deg, 
-                transparent 20deg);
-            filter: blur(50px);
-            animation: raysRotate 60s linear infinite;
-            transform-origin: top center;
+        /* --- ІНДИКАТОР ПРОГРЕСУ --- */
+        #quiz-progress-bar {
+            position: fixed;
+            top: 0; left: 0; height: 5px;
+            width: 0%; background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+            z-index: 1000;
+            transition: width 0.5s ease;
+            display: none;
         }
 
-        .bubble {
-            position: absolute;
-            bottom: -100px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            animation: rise 12s infinite ease-in;
-        }
-
-        @keyframes raysRotate {
-            from { transform: translateX(-50%) rotate(0deg); }
-            to { transform: translateX(-50%) rotate(360deg); }
-        }
-
-        @keyframes rise {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            50% { opacity: 0.2; }
-            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+        /* --- ЕФЕКТ СПАЛАХУ --- */
+        #flash-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
         section {
@@ -77,20 +75,12 @@
             padding: 20px;
         }
 
-        .hero-title-wrap {
-            position: relative;
-            padding: 40px;
-            text-align: center;
-        }
-
+        /* --- ФІКСОВАНИЙ ТЕКСТ АВТОРІВ --- */
+        .hero-title-wrap { position: relative; padding: 40px; text-align: center; }
         .hero-title-wrap::before, .hero-title-wrap::after {
-            content: '';
-            position: absolute;
-            width: 60px; height: 60px;
-            border: 2px solid var(--accent);
-            filter: drop-shadow(0 0 10px var(--accent));
+            content: ''; position: absolute; width: 60px; height: 60px;
+            border: 2px solid var(--accent); filter: drop-shadow(0 0 10px var(--accent));
         }
-
         .hero-title-wrap::before { top: 0; left: 0; border-right: none; border-bottom: none; }
         .hero-title-wrap::after { bottom: 0; right: 0; border-left: none; border-top: none; }
 
@@ -102,166 +92,320 @@
             text-shadow: 0 0 20px var(--accent-glow);
         }
 
-        h2 { 
-            font-size: 2rem; 
-            color: #fff; 
-            margin-bottom: 15px; 
-            text-transform: uppercase;
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
-
         .author-wrapper {
-            margin-top: 30px;
-            padding: 10px 25px;
-            border: 1px solid var(--accent);
-            border-radius: 50px;
+            margin-top: 30px; padding: 10px 25px;
+            border: 1px solid var(--accent); border-radius: 50px;
             background: rgba(0, 212, 255, 0.05);
         }
 
         .authors { display: flex; gap: 30px; }
-        .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; margin-bottom: 2px; }
+        .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; }
 
+        /* --- КОНТЕНТ БОКСИ --- */
         .content-box {
-            max-width: 1200px;
-            width: 95%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 30px 45px;
-            display: flex;
-            gap: 35px;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(30px);
+            max-width: 1200px; width: 95%;
+            background: var(--glass-bg); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 30px;
+            padding: 30px 45px; display: flex; gap: 35px;
+            align-items: center; opacity: 0; transform: translateY(30px);
             transition: all 0.8s ease-out;
         }
 
         section.visible .content-box { opacity: 1; transform: translateY(0); }
-
         .text-side { flex: 1.7; }
         .image-side { flex: 1; height: 350px; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); }
         .image-side img { width: 100%; height: 100%; object-fit: cover; }
-
+        h2 { font-size: 2rem; color: #fff; margin-bottom: 15px; text-transform: uppercase; text-shadow: 0 0 10px var(--accent-glow); }
         p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; text-align: justify; color: #d1d9e0; }
         .highlight { color: var(--accent); font-weight: bold; }
 
-        .grid-info { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            margin-top: 15px; 
-            width: 100%; 
-        }
-        
-        .info-item {
-            background: rgba(255,255,255,0.02);
-            padding: 15px 20px;
-            border-radius: 20px;
+        .grid-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; width: 100%; }
+        .info-item { background: rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .info-item h3 { color: var(--accent); margin-bottom: 8px; font-size: 1.1rem; text-align: center; }
+        .info-item p { font-size: 0.85rem; line-height: 1.4; text-align: center; }
+
+        /* --- QUIZ STYLES --- */
+        .quiz-container { text-align: center; max-width: 800px; width: 100%; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+        .option-btn {
+            background: rgba(255,255,255,0.05);
             border: 1px solid var(--glass-border);
+            padding: 20px; border-radius: 15px;
+            color: #fff; font-family: 'Montserrat', sans-serif;
+            font-size: 1rem; cursor: pointer; transition: 0.3s;
         }
+        .option-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+        .option-btn.correct { background: rgba(0, 255, 136, 0.2); border-color: var(--correct); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+        .option-btn.wrong { background: rgba(255, 77, 77, 0.2); border-color: var(--wrong); box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
 
-        .info-item h3 { 
-            color: var(--accent); 
-            margin-bottom: 8px; 
-            font-size: 1.1rem; 
-            text-align: center;
+        .feedback-box {
+            margin-top: 25px; padding: 20px; border-radius: 15px;
+            display: none; animation: fadeIn 0.5s;
         }
-        
-        .info-item p { font-size: 0.85rem; line-height: 1.4; margin-bottom: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        .scroll-hint {
+            margin-top: 20px; font-weight: bold; color: var(--accent);
+            animation: bounce 2s infinite; display: none;
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        /* Приховати розділи тесту поки не дійдемо до них */
+        .quiz-section { display: none; scroll-snap-align: start; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
 
-    <div class="ocean-bg">
-        <div class="sun-rays"></div>
+    <div id="quiz-progress-bar"></div>
+    <div id="flash-overlay"></div>
+    <div class="ocean-bg"></div>
+
+    <div class="snap-container" id="main-scroll">
+        <section class="hero visible" id="s1">
+            <div class="hero-title-wrap">
+                <p style="letter-spacing: 10px; color: var(--accent); margin-bottom: 10px; font-size: 0.8rem;">НАУКОВИЙ ПРОЄКТ</p>
+                <h1>Цвітіння води</h1>
+            </div>
+            <div class="author-wrapper">
+                <div class="authors">
+                    <div class="author-card"><span>Розробник:</span><strong>Роман Бабельський</strong></div>
+                    <div class="author-card"><span>Контент:</span><strong>Матвій Смольницький</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="s2">
+            <div class="content-box">
+                <div class="text-side">
+                    <h2>Що це за явище?</h2>
+                    <p>Масове розмноження <span class="highlight">ціанобактерій</span> — це не просто зміна кольору водойми. Ці мікроорганізми за сприятливих умов починають ділитися з геометричною прогресією, заповнюючи собою кожен сантиметр поверхні.</p>
+                    <p>Зелена плівка стає бар'єром для сонячних променів. Без світла підводні рослини припиняють фотосинтез і починають розкладатися. Це призводить до критичного зниження рівня кисню, що запускає процес "замору" риби.</p>
+                    <p>В результаті водойма втрачає здатність до самоочищення. Кисневе голодування перетворює живу річку на стояче болото, де процеси гниття переважають над життям.</p>
+                </div>
+                <div class="image-side">
+                    <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння під мікроскопом">
+                </div>
+            </div>
+        </section>
+
+        <section id="s3">
+            <div class="content-box" style="flex-direction: column; padding: 25px 40px;">
+                <div style="text-align: center; max-width: 1000px;">
+                    <h2>Чому це відбувається?</h2>
+                    <p style="text-align: center;">Головна причина — надмірне потрапляння азоту та фосфору у воду. Для бактерій це агресивний стимулятор росту. Основними джерелами є людська діяльність.</p>
+                </div>
+                <div class="grid-info">
+                    <div class="info-item">
+                        <h3>Мийні засоби</h3>
+                        <p>Фосфати в порошках — ідеальне паливо. 1г фосфату провокує появу до 15кг водоростей.</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Агро-сектор</h3>
+                        <p>Добрива вимиваються з полів дощами і створюють постійний потік живлення для бактерій.</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Греблі та спека</h3>
+                        <p>Річки втрачають швидкість, вода прогрівається швидше, створюючи "інкубатор" для бактерій.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="s4">
+            <div class="content-box">
+                <div class="image-side">
+                    <img src="https://images.unsplash.com/photo-1621447508323-271221c803ac?q=80&w=2000" alt="Наслідки">
+                </div>
+                <div class="text-side">
+                    <h2>Приховані загрози</h2>
+                    <p>Цвітіння несе загрозу через <span class="highlight">мікроцистини</span> — токсини бактерій. Контакт викликає дерматити, алергії та отруєння. Ці речовини не руйнуються навіть при кип'ятінні.</p>
+                    <p>Під час гниття виділяються аміак та сірководень. Тварини, що п'ють таку воду, часто гинуть від інтоксикації, а водойма офіційно стає зоною екологічного лиха.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="quiz-section" id="q1" data-q="1">
+            <div class="quiz-container">
+                <h2>Питання 1/6</h2>
+                <p style="font-size: 1.5rem; text-align: center;">Хто є головним "винуватцем" цвітіння води?</p>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ціанобактерії — це мікроскопічні організми, що заповнюють поверхню.')">Дрібні риби</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ціанобактерії — це мікроскопічні організми, що заповнюють поверхню.')">Підводні камені</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно! Саме ціанобактерії (синьо-зелені водорості) викликають це явище.')">Ціанобактерії</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ціанобактерії — це мікроскопічні організми, що заповнюють поверхню.')">Морські моржі</button>
+                </div>
+                <div class="feedback-box"></div>
+                <div class="scroll-hint">Гортай вниз для наступного питання ↓</div>
+            </div>
+        </section>
+
+        <section class="quiz-section" id="q2" data-q="2">
+            <div class="quiz-container">
+                <h2>Питання 2/6</h2>
+                <p style="font-size: 1.5rem; text-align: center;">Що створюють водорості на поверхні, блокуючи сонце?</p>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку, яка діє як ковдра.')">Крижаний панцир</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Вірно! Ця плівка не дає світлу потрапити до рослин на дні.')">Щільну "ковдру" або плівку</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку, яка діє як ковдра.')">Електричне поле</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку, яка діє як ковдра.')">Кораловий риф</button>
+                </div>
+                <div class="feedback-box"></div>
+                <div class="scroll-hint">Гортай вниз ↓</div>
+            </div>
+        </section>
+
+        <section class="quiz-section" id="q3" data-q="3">
+            <div class="quiz-container">
+                <h2>Питання 3/6</h2>
+                <p style="font-size: 1.5rem; text-align: center;">Яка речовина з порошків є "супер-їжею" для бактерій?</p>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — це головний стимулятор росту.')">Сода</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — це головний стимулятор росту.')">Ароматизатори</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Саме так! Фосфати стимулюють вибуховий ріст водоростей.')">Фосфати</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — це головний стимулятор росту.')">Відбілювач</button>
+                </div>
+                <div class="feedback-box"></div>
+                <div class="scroll-hint">Гортай вниз ↓</div>
+            </div>
+        </section>
+
+        <section class="quiz-section" id="q4" data-q="4">
+            <div class="quiz-container">
+                <h2>Питання 4/6</h2>
+                <p style="font-size: 1.5rem; text-align: center;">Чому кип'ятіння не рятує "цвілу" воду?</p>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Вода стає гарячою</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Точно! Токсини бактерій витримують високі температури.')">Токсини не руйнуються при 100°C</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Бактерії люблять окріп</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Зникає весь кисень</button>
+                </div>
+                <div class="feedback-box"></div>
+                <div class="scroll-hint">Гортай вниз ↓</div>
+            </div>
+        </section>
+
+        <section class="quiz-section" id="q5" data-q="5">
+            <div class="quiz-container">
+                <h2>Питання 5/6</h2>
+                <p style="font-size: 1.5rem; text-align: center;">Що відбувається з рибою, коли водорості гниють?</p>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень, і риба задихається.')">Вона швидше росте</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень, і риба задихається.')">Вона змінює колір</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно. Кисень витрачається на гниття, риба гине.')">Гине через брак кисню</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень, і риба задихається.')">Вона їх їсть</button>
+                </div>
+                <div class="feedback-box"></div>
+                <div class="scroll-hint">Гортай вниз ↓</div>
+            </div>
+        </section>
+
+        <section class="quiz-section" id="q6" data-q="6">
+            <div class="quiz-container">
+                <h2>Питання 6/6</h2>
+                <p style="font-size: 1.5rem; text-align: center;">Який напис на упаковці побутової хімії допоможе річкам?</p>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Використання безфосфатних засобів зупиняє підживлення бактерій.')">Для ручного прання</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Використання безфосфатних засобів зупиняє підживлення бактерій.')">Ефект свіжості</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Абсолютно! Це найпростіший спосіб врятувати річки.')">Без фосфатів</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Використання безфосфатних засобів зупиняє підживлення бактерій.')">Велика упаковка</button>
+                </div>
+                <div class="feedback-box"></div>
+                <div class="scroll-hint">Тест пройдено! Гортай далі для фіналу ↓</div>
+            </div>
+        </section>
     </div>
 
-    <section class="hero visible">
-        <div class="hero-title-wrap">
-            <p style="letter-spacing: 10px; color: var(--accent); margin-bottom: 10px; font-size: 0.8rem;">НАУКОВИЙ ПРОЄКТ</p>
-            <h1>Цвітіння води</h1>
-        </div>
-        <div class="author-wrapper">
-            <div class="authors">
-                <div class="author-card"><span>Розробник:</span><strong>Роман Бабельський</strong></div>
-                <div class="author-card"><span>Контент:</span><strong>Матвій Смольницький</strong></div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="content-box">
-            <div class="text-side">
-                <h2>Що це за явище?</h2>
-                <p>Масове розмноження <span class="highlight">ціанобактерій</span> — це не просто зміна кольору водойми. Ці мікроорганізми, які існують мільярди років, за сприятливих умов починають ділитися з геометричною прогресією, заповнюючи собою кожен сантиметр поверхні.</p>
-                <p>Зелена плівка стає справжнім бар'єром для сонячних променів. Без світла підводні рослини припиняють фотосинтез і починають розкладатися. Це призводить до критичного зниження рівня кисню, що запускає процес "замору" риби та інших водних мешканців.</p>
-                <p>В результаті водойма втрачає здатність до самоочищення. Кисневе голодування перетворює живу річку на стояче болото, де процеси гниття переважають над процесами життя, створюючи токсичне середовище для всього живого навколо.</p>
-            </div>
-            <div class="image-side">
-                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння під мікроскопом">
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="content-box" style="flex-direction: column; padding: 25px 40px;">
-            <div style="text-align: center; max-width: 1000px;">
-                <h2>Чому це відбувається?</h2>
-                <p style="text-align: center;">Головна причина цвітіння — це надмірне потрапляння поживних речовин (азоту та фосфору) у воду. Для ціанобактерій ці елементи діють як агресивний стимулятор росту. Екосистема не встигає переробляти такий об'єм "добрив", що призводить до біологічного вибуху. Основними джерелами цих речовин є людська діяльність у кількох напрямках.</p>
-            </div>
-            <div class="grid-info">
-                <div class="info-item">
-                    <h3>Мийні засоби</h3>
-                    <p>Фосфати у складі порошків — це ідеальне паливо. 1 грам фосфату може спровокувати появу до 15 кг водоростей, які миттєво поглинають весь розчинений кисень у водоймі.</p>
-                </div>
-                <div class="info-item">
-                    <h3>Агро-сектор</h3>
-                    <p>Мінеральні добрива вимиваються з полів дощами та стікають у річки. Це створює постійний потік поживних речовин, який підтримує цвітіння протягом усього літнього сезону.</p>
-                </div>
-                <div class="info-item">
-                    <h3>Греблі та спека</h3>
-                    <p>Через дамби річки втрачають швидкість, перетворюючись на каскади стоячих озер. Вода прогрівається значно швидше, створюючи ідеальний "інкубатор" для розмноження бактерій.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="content-box">
-            <div class="image-side">
-                <img src="https://images.unsplash.com/photo-1621447508323-271221c803ac?q=80&w=2000" alt="Наслідки для екології">
-            </div>
-            <div class="text-side">
-                <h2>Приховані загрози</h2>
-                <p>Цвітіння несе пряму загрозу здоров'ю через <span class="highlight">мікроцистини</span> — токсини, що виділяються бактеріями. Контакт із такою водою викликає дерматити, алергії та сильні отруєння. Ці речовини настільки стійкі, що не руйнуються навіть при кип'ятінні води.</p>
-                <p>Крім того, під час гниття водоростей у воду потрапляють аміак, метан та сірководень. Це не тільки створює жахливий запах, але й робить воду мертвою. Тварини, що п'ють з таких джерел, часто гинуть від інтоксикації, а цілі регіони можуть втратити доступ до питної води.</p>
-                <p>Економіка також страждає: закриваються зони відпочинку, припиняється рибальство, а очищення води для потреб міста стає в десятки разів дорожчим і складнішим процесом.</p>
-            </div>
-        </div>
-    </section>
-
     <script>
-        const bg = document.querySelector('.ocean-bg');
-        for (let i = 0; i < 20; i++) {
-            const b = document.createElement('div');
-            b.className = 'bubble';
-            const size = Math.random() * 12 + 5 + 'px';
-            b.style.width = size; b.style.height = size;
-            b.style.left = Math.random() * 100 + '%';
-            b.style.animationDuration = Math.random() * 5 + 7 + 's';
-            b.style.animationDelay = Math.random() * 10 + 's';
-            bg.appendChild(b);
-        }
+        const container = document.getElementById('main-scroll');
+        const sections = document.querySelectorAll('section');
+        const progressBar = document.getElementById('quiz-progress-bar');
+        const flash = document.getElementById('flash-overlay');
+        let quizStarted = false;
+        let currentQuestion = 0;
 
+        // Intersection Observer для появи тексту
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Логіка блокування повернення після 4 слайда
+                    if (entry.target.id === 'q1' && !quizStarted) {
+                        startQuiz();
+                    }
+                }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.5 });
+        sections.forEach(s => observer.observe(s));
 
-        document.querySelectorAll('section').forEach(s => observer.observe(s));
+        function startQuiz() {
+            quizStarted = true;
+            progressBar.style.display = 'block';
+            // Видаляємо минулі слайди для неможливості повернення
+            ['s1', 's2', 's3', 's4'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            // Показуємо перше питання
+            document.getElementById('q1').style.display = 'flex';
+            updateProgress(1);
+            window.scrollTo(0, 0);
+            container.style.scrollSnapType = "none"; 
+            document.body.style.overflow = "hidden"; // Заборона скролу поки не відповість
+        }
+
+        function checkAnswer(btn, isCorrect, explanation) {
+            const parent = btn.closest('.quiz-section');
+            const feedback = parent.querySelector('.feedback-box');
+            const hint = parent.querySelector('.scroll-hint');
+            const btns = parent.querySelectorAll('.option-btn');
+
+            btns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedback.style.background = "rgba(0, 255, 136, 0.1)";
+                feedback.innerHTML = `<h3 style="color:var(--correct)">Вірно!</h3><p>${explanation}</p>`;
+                triggerFlash('rgba(0, 255, 136, 0.3)');
+            } else {
+                btn.classList.add('wrong');
+                parent.querySelector('[data-correct="true"]').classList.add('correct');
+                feedback.style.background = "rgba(255, 77, 77, 0.1)";
+                feedback.innerHTML = `<h3 style="color:var(--wrong)">Неправильно...</h3><p>${explanation}</p>`;
+                triggerFlash('rgba(255, 77, 77, 0.3)');
+            }
+
+            feedback.style.display = 'block';
+            hint.style.display = 'block';
+            document.body.style.overflow = "auto"; // Дозволяємо скрол до наступного питання
+
+            // Логіка переходу до наступного питання
+            const qNum = parseInt(parent.dataset.q);
+            if (qNum < 6) {
+                const nextQ = document.getElementById(`q${qNum + 1}`);
+                nextQ.style.display = 'flex';
+            }
+        }
+
+        function triggerFlash(color) {
+            flash.style.background = color;
+            flash.style.opacity = '1';
+            setTimeout(() => flash.style.opacity = '0', 300);
+        }
+
+        function updateProgress(qNum) {
+            const percent = (qNum / 6) * 100;
+            progressBar.style.width = percent + '%';
+        }
+
+        // Оновлення прогрес-бару при скролі між питаннями
+        container.addEventListener('scroll', () => {
+            const quizSections = document.querySelectorAll('.quiz-section');
+            quizSections.forEach(qs => {
+                const rect = qs.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                    updateProgress(parseInt(qs.dataset.q));
+                }
+            });
+        });
     </script>
 </body>
 </html>
