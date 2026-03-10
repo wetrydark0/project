@@ -29,56 +29,58 @@
             scroll-behavior: smooth;
         }
 
-        /* --- ОНОВЛЕНИЙ ЖИВИЙ ФОН --- */
+        /* --- ПЕРЕВІРЕНИЙ ЖИВИЙ ФОН --- */
         .ocean-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: linear-gradient(180deg, #0a243d 0%, #010811 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            z-index: -10;
+            /* Анімований градієнт */
+            background: linear-gradient(180deg, #05192d, #010811, #0a243d);
+            background-size: 100% 300%;
+            animation: oceanFlow 10s ease infinite;
         }
 
         .bg-rays {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% -20%, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
-            animation: raysPulse 8s ease-in-out infinite;
+            z-index: -9;
+            background: radial-gradient(circle at 50% -10%, rgba(0, 212, 255, 0.2) 0%, transparent 60%);
             pointer-events: none;
+            animation: raysPulse 6s ease-in-out infinite;
         }
 
         .bubbles-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            z-index: -8;
             pointer-events: none;
-            overflow: hidden;
         }
 
         .bubble {
             position: absolute;
-            bottom: -50px;
-            background: rgba(255, 255, 255, 0.1);
+            bottom: -20px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: bubbleUp 10s linear infinite;
+            animation: bubbleUp 8s linear infinite;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 50% 0%; }
-            50% { background-position: 50% 100%; }
-            100% { background-position: 50% 0%; }
+        @keyframes oceanFlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
         }
 
         @keyframes raysPulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         @keyframes bubbleUp {
-            0% { transform: translateY(0) translateX(0); opacity: 0; }
-            20% { opacity: 0.3; }
-            100% { transform: translateY(-110vh) translateX(50px); opacity: 0; }
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
         }
         /* --------------------------- */
 
@@ -86,6 +88,8 @@
             height: 100vh;
             overflow-y: auto;
             scroll-snap-type: y mandatory;
+            position: relative;
+            z-index: 1;
         }
 
         #quiz-progress-bar {
@@ -116,6 +120,7 @@
             scroll-snap-align: start;
             position: relative;
             padding: 20px;
+            background: transparent; /* Щоб фон було видно */
         }
 
         .hero-title-wrap { position: relative; padding: 40px; text-align: center; }
@@ -395,23 +400,17 @@
     </div>
 
     <script>
-        const container = document.getElementById('main-scroll');
-        const progressBar = document.getElementById('quiz-progress-bar');
-        const flash = document.getElementById('flash-overlay');
-        let quizActive = false;
-
         // ГЕНЕРАЦІЯ БУЛЬБАШОК
         function createBubbles() {
             const container = document.getElementById('bubbles');
-            for(let i = 0; i < 15; i++) {
+            for(let i = 0; i < 20; i++) {
                 const bubble = document.createElement('div');
                 bubble.className = 'bubble';
-                const size = Math.random() * 20 + 5 + 'px';
+                const size = Math.random() * 15 + 5 + 'px';
                 bubble.style.width = size;
                 bubble.style.height = size;
                 bubble.style.left = Math.random() * 100 + '%';
-                bubble.style.animationDelay = Math.random() * 10 + 's';
-                bubble.style.opacity = Math.random() * 0.3;
+                bubble.style.animationDelay = Math.random() * 15 + 's';
                 container.appendChild(bubble);
             }
         }
@@ -431,15 +430,14 @@
         document.querySelectorAll('section').forEach(s => observer.observe(s));
 
         function startQuizMechanics() {
-            quizActive = true;
-            progressBar.style.display = 'block';
+            document.getElementById('quiz-progress-bar').style.display = 'block';
             ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).style.display = 'none');
             window.scrollTo(0, 0);
             document.body.style.overflow = "hidden"; 
         }
 
         function checkAnswer(btn, isCorrect, explanation) {
-            if (!quizActive) startQuizMechanics();
+            if (document.getElementById('s1').style.display !== 'none') startQuizMechanics();
 
             const parent = btn.closest('.quiz-section');
             const feedback = parent.querySelector('.feedback-box');
@@ -452,13 +450,11 @@
                 btn.classList.add('correct');
                 feedback.style.background = "rgba(0, 255, 136, 0.1)";
                 feedback.innerHTML = `<h3 style="color:var(--correct)">Вірно!</h3><p>${explanation}</p>`;
-                triggerFlash('rgba(0, 255, 136, 0.3)');
             } else {
                 btn.classList.add('wrong');
                 parent.querySelector('[data-correct="true"]').classList.add('correct');
                 feedback.style.background = "rgba(255, 77, 77, 0.1)";
                 feedback.innerHTML = `<h3 style="color:var(--wrong)">Неправильно...</h3><p>${explanation}</p>`;
-                triggerFlash('rgba(255, 77, 77, 0.3)');
             }
 
             feedback.style.display = 'block';
@@ -472,17 +468,7 @@
                 document.getElementById('solution-slide').style.display = 'flex';
                 document.getElementById('final-slide').style.display = 'flex';
             }
-            updateProgress(qNum);
-        }
-
-        function triggerFlash(color) {
-            flash.style.background = color;
-            flash.style.opacity = '1';
-            setTimeout(() => flash.style.opacity = '0', 300);
-        }
-
-        function updateProgress(qNum) {
-            progressBar.style.width = (qNum / 6) * 100 + '%';
+            document.getElementById('quiz-progress-bar').style.width = (qNum / 6) * 100 + '%';
         }
     </script>
 </body>
