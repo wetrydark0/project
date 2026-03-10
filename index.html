@@ -77,7 +77,6 @@
             padding: 20px;
         }
 
-        /* --- ПЕРШИЙ СЛАЙД: ДЕКОР --- */
         .hero-title-wrap {
             position: relative;
             padding: 40px;
@@ -100,42 +99,38 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 4px;
-            text-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 20px var(--accent-glow);
         }
 
-        /* --- ПІДСВІТКА ЗАГОЛОВКІВ --- */
         h2 { 
-            font-size: 2.2rem; 
+            font-size: 2rem; 
             color: #fff; 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             text-transform: uppercase;
-            text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow);
-            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
 
         .author-wrapper {
-            margin-top: 40px;
-            padding: 12px 30px;
+            margin-top: 30px;
+            padding: 10px 25px;
             border: 1px solid var(--accent);
             border-radius: 50px;
             background: rgba(0, 212, 255, 0.05);
-            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .authors { display: flex; gap: 20px; }
-        .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; }
+        .author-card span { font-size: 10px; color: var(--accent); display: block; }
 
-        /* --- КОНТЕНТ БОКСИ --- */
         .content-box {
-            max-width: 1100px;
-            width: 90%;
+            max-width: 1200px;
+            width: 95%;
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            border-radius: 35px;
-            padding: 40px;
+            border-radius: 30px;
+            padding: 30px 45px;
             display: flex;
-            gap: 40px;
+            gap: 35px;
             align-items: center;
             opacity: 0;
             transform: translateY(30px);
@@ -144,38 +139,36 @@
 
         section.visible .content-box { opacity: 1; transform: translateY(0); }
 
-        .text-side { flex: 1.5; }
-        .image-side { flex: 1; height: 320px; border-radius: 25px; overflow: hidden; border: 1px solid var(--glass-border); }
+        .text-side { flex: 1.7; }
+        .image-side { flex: 1; height: 350px; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); }
         .image-side img { width: 100%; height: 100%; object-fit: cover; }
 
-        p { font-size: 1rem; line-height: 1.7; margin-bottom: 15px; text-align: justify; color: #d1d9e0; }
+        p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; text-align: justify; color: #d1d9e0; }
         .highlight { color: var(--accent); font-weight: bold; }
 
-        /* --- ТРЕТІЙ СЛАЙД: ОПТИМІЗАЦІЯ --- */
         .grid-info { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
             gap: 15px; 
-            margin-top: 20px; 
+            margin-top: 15px; 
             width: 100%; 
         }
         
         .info-item {
             background: rgba(255,255,255,0.02);
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 20px;
             border: 1px solid var(--glass-border);
-            text-align: center;
         }
 
         .info-item h3 { 
             color: var(--accent); 
-            margin-bottom: 10px; 
+            margin-bottom: 8px; 
             font-size: 1.1rem; 
-            text-shadow: 0 0 8px var(--accent-glow);
+            text-align: center;
         }
         
-        .info-item p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 0; }
+        .info-item p { font-size: 0.85rem; line-height: 1.4; margin-bottom: 0; }
 
     </style>
 </head>
@@ -187,13 +180,12 @@
 
     <section class="hero visible">
         <div class="hero-title-wrap">
-            <p style="letter-spacing: 10px; color: var(--accent); margin-bottom: 15px; font-size: 0.9rem;">ЕКОЛОГІЧНИЙ ПРОЄКТ</p>
+            <p style="letter-spacing: 10px; color: var(--accent); margin-bottom: 10px; font-size: 0.8rem;">НАУКОВИЙ ПРОЄКТ</p>
             <h1>Цвітіння води</h1>
         </div>
         <div class="author-wrapper">
             <div class="authors">
-                <div class="author-card"><span>Розробка:</span><strong>Р. Бабельський</strong></div>
-                <div class="author-card"><span>Контент:</span><strong>М. Смольницький</strong></div>
+                <div class="author-card"><span>Автори:</span><strong>Р. Бабельський & М. Смольницький</strong></div>
             </div>
         </div>
     </section>
@@ -202,33 +194,34 @@
         <div class="content-box">
             <div class="text-side">
                 <h2>Що це за явище?</h2>
-                <p>Коли ми бачимо, що річка стала схожою на зелений кисіль — це не просто бруд. Це масове розмноження <span class="highlight">ціанобактерій</span>. Вони настільки швидко захоплюють водойму, що природа не встигає з ними боротися.</p>
-                <p>Цей зелений шар блокує сонячне світло. Без сонця підводні рослини гинуть, а коли водорості починають розкладатися, вони забирають весь кисень із води. Рибі просто стає нічим дихати.</p>
+                <p>Багато хто звикли вважати, що "зелена вода" влітку — це природна норма. Насправді ми маємо справу з агресивним розмноженням <span class="highlight">ціанобактерій</span>. Ці істоти існують мільярди років і є одними з найдавніших на планеті, але саме через людську діяльність вони почали захоплювати водойми з катастрофічною швидкістю.</p>
+                <p>Коли умови стають сприятливими, бактерії утворюють на поверхні товсту плівку, яка працює як непроникний екран. Ця "ковдра" повністю блокує сонячне світло. Підводні рослини, позбавлені сонця, перестають виробляти кисень і починають гинути. Це створює ланцюгову реакцію: кисню стає все менше, а рівень вуглекислого газу та продуктів розпаду зростає.</p>
+                <p>Завершується цей процес тим, що рибі та молюскам стає нічим дихати. Водойма буквально задихається під власною поверхнею, перетворюючись на біологічну пустелю за лічені тижні.</p>
             </div>
             <div class="image-side">
-                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Водорості">
+                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння під мікроскопом">
             </div>
         </div>
     </section>
 
     <section>
-        <div class="content-box" style="flex-direction: column; padding: 30px 40px;">
-            <div style="text-align: center; max-width: 900px;">
+        <div class="content-box" style="flex-direction: column; padding: 25px 40px;">
+            <div style="text-align: center; max-width: 1000px;">
                 <h2>Чому це відбувається?</h2>
-                <p style="text-align: center; font-size: 0.95rem;">Річки не цвітуть самі по собі. Ми даємо їм "супер-їжу", якої в природі зазвичай мало. Головний винуватець — фосфати, які ми використовуємо щодня. Для водоростей це як допінг, що змушує їх рости в сотні разів швидше.</p>
+                <p style="text-align: center;">Природа здатна самостійно регулювати кількість водоростей, але ми дали їм "супер-їжу", якої в звичайних умовах критично мало. Головний фактор — це надлишок фосфору та азоту. Для бактерій ці речовини працюють як найпотужніший допінг, що змушує їх ділитися у сотні разів швидше, ніж передбачено екосистемою. Людина створює цей "бенкет" через три основні шляхи.</p>
             </div>
             <div class="grid-info">
                 <div class="info-item">
                     <h3>Мийні засоби</h3>
-                    <p>Порошки з фосфатами — це ідеальне добриво. 1 грам фосфату може дати ріст 10 кг зеленої маси.</p>
+                    <p>Більшість пральних порошків містять фосфати. Коли ця брудна вода потрапляє в каналізацію, а потім у річки, вона стає ідеальним паливом для водоростей. Лише 1 грам фосфату здатен спровокувати появу 10-15 кг зеленої маси.</p>
                 </div>
                 <div class="info-item">
-                    <h3>Стоки з полів</h3>
-                    <p>Дощі змивають добрива з ферм прямо в річки. Для бактерій це справжній "шведський стіл" на все літо.</p>
+                    <h3>Сільське господарство</h3>
+                    <p>Під час дощів мінеральні добрива, якими посипають поля, змиваються прямо у водойми. Для бактерій це величезний "шведський стіл", де вони можуть безперешкодно розмножуватися протягом усього літа.</p>
                 </div>
                 <div class="info-item">
-                    <h3>Стояча вода</h3>
-                    <p>Дамби зупиняють течію, а спека прогріває воду. У такій "теплій ванні" бактерії діляться миттєво.</p>
+                    <h3>Дамби та спека</h3>
+                    <p>Завдяки греблям річки стають повільними, а вода — стоячою. Вона прогрівається значно швидше, а відсутність течії заважає природному очищенню. В такій "теплій ванні" бактерії почуваються господарями життя.</p>
                 </div>
             </div>
         </div>
@@ -237,12 +230,13 @@
     <section>
         <div class="content-box">
             <div class="image-side">
-                <img src="https://images.unsplash.com/photo-1621447508323-271221c803ac?q=80&w=2000" alt="Забруднення">
+                <img src="https://images.unsplash.com/photo-1621447508323-271221c803ac?q=80&w=2000" alt="Забруднена вода">
             </div>
             <div class="text-side">
-                <h2>Чим це небезпечно?</h2>
-                <p>Крім неприємного вигляду, ці бактерії виділяють <span class="highlight">токсини</span>. Якщо людина поплаває в такій воді, можуть виникнути алергії або висипи. Тварини ж можуть серйозно отруїтися.</p>
-                <p>Цікаво, що ці отрути настільки стійкі, що навіть кип'ятіння води не робить її безпечною. По суті, водойма перетворюється на "мертву зону", де не може жити нічого, крім самих водоростей.</p>
+                <h2>Приховані загрози</h2>
+                <p>Цвітіння води — це не тільки про колір і поганий запах. Ціанобактерії в процесі життя виділяють небезпечні <span class="highlight">мікроцистини</span>. Ці токсини можуть викликати у людей подразнення шкіри, сильні алергічні реакції та навіть ураження внутрішніх органів, якщо випадково ковтнути воду під час купання.</p>
+                <p>Для фауни наслідки ще гірші. Тварини, що п'ють з таких річок, отримують смертельні отруєння. Крім того, коли величезна маса водоростей починає гнити, вона виділяє аміак та сірководень, що робить воду абсолютно непридатною для життя будь-чого живого.</p>
+                <p>Важливо пам'ятати: ці токсини настільки стійкі, що навіть кип'ятіння не робить воду безпечною. Якщо річка "зацвіла", вона офіційно стає зоною екологічного лиха, де заборонено будь-який контакт з водою.</p>
             </div>
         </div>
     </section>
