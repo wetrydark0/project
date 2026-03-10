@@ -29,17 +29,63 @@
             scroll-behavior: smooth;
         }
 
-        .snap-container {
-            height: 100vh;
-            overflow-y: auto;
-            scroll-snap-type: y mandatory;
-        }
-
+        /* --- ОНОВЛЕНИЙ ЖИВИЙ ФОН --- */
         .ocean-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
-            background: radial-gradient(circle at 50% 0%, #0a243d 0%, #010811 100%);
+            background: linear-gradient(180deg, #0a243d 0%, #010811 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        .bg-rays {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% -20%, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            animation: raysPulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .bubbles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: bubbleUp 10s linear infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 50% 0%; }
+            50% { background-position: 50% 100%; }
+            100% { background-position: 50% 0%; }
+        }
+
+        @keyframes raysPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        @keyframes bubbleUp {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            20% { opacity: 0.3; }
+            100% { transform: translateY(-110vh) translateX(50px); opacity: 0; }
+        }
+        /* --------------------------- */
+
+        .snap-container {
+            height: 100vh;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
         }
 
         #quiz-progress-bar {
@@ -158,7 +204,10 @@
 
     <div id="quiz-progress-bar"></div>
     <div id="flash-overlay"></div>
+    
     <div class="ocean-bg"></div>
+    <div class="bg-rays"></div>
+    <div class="bubbles-container" id="bubbles"></div>
 
     <div class="snap-container" id="main-scroll">
         <section class="hero visible" id="s1">
@@ -350,6 +399,23 @@
         const progressBar = document.getElementById('quiz-progress-bar');
         const flash = document.getElementById('flash-overlay');
         let quizActive = false;
+
+        // ГЕНЕРАЦІЯ БУЛЬБАШОК
+        function createBubbles() {
+            const container = document.getElementById('bubbles');
+            for(let i = 0; i < 15; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 20 + 5 + 'px';
+                bubble.style.width = size;
+                bubble.style.height = size;
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDelay = Math.random() * 10 + 's';
+                bubble.style.opacity = Math.random() * 0.3;
+                container.appendChild(bubble);
+            }
+        }
+        createBubbles();
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
