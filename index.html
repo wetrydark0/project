@@ -29,7 +29,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Стилі для скрол-снапу (вимкнемо його для тесту пізніше через JS) */
         .snap-container {
             height: 100vh;
             overflow-y: auto;
@@ -43,7 +42,6 @@
             background: radial-gradient(circle at 50% 0%, #0a243d 0%, #010811 100%);
         }
 
-        /* --- ІНДИКАТОР ПРОГРЕСУ --- */
         #quiz-progress-bar {
             position: fixed;
             top: 0; left: 0; height: 5px;
@@ -54,7 +52,6 @@
             display: none;
         }
 
-        /* --- ЕФЕКТ СПАЛАХУ --- */
         #flash-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -75,7 +72,6 @@
             padding: 20px;
         }
 
-        /* --- ФІКСОВАНИЙ ТЕКСТ АВТОРІВ --- */
         .hero-title-wrap { position: relative; padding: 40px; text-align: center; }
         .hero-title-wrap::before, .hero-title-wrap::after {
             content: ''; position: absolute; width: 60px; height: 60px;
@@ -101,7 +97,6 @@
         .authors { display: flex; gap: 30px; }
         .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; }
 
-        /* --- КОНТЕНТ БОКСИ --- */
         .content-box {
             max-width: 1200px; width: 95%;
             background: var(--glass-bg); backdrop-filter: blur(15px);
@@ -124,34 +119,22 @@
         .info-item h3 { color: var(--accent); margin-bottom: 8px; font-size: 1.1rem; text-align: center; }
         .info-item p { font-size: 0.85rem; line-height: 1.4; text-align: center; }
 
-        /* --- QUIZ STYLES --- */
         .quiz-container { text-align: center; max-width: 800px; width: 100%; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
         .option-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: 15px;
-            color: #fff; font-family: 'Montserrat', sans-serif;
-            font-size: 1rem; cursor: pointer; transition: 0.3s;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            padding: 20px; border-radius: 15px; color: #fff; cursor: pointer; transition: 0.3s;
         }
         .option-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
         .option-btn.correct { background: rgba(0, 255, 136, 0.2); border-color: var(--correct); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
         .option-btn.wrong { background: rgba(255, 77, 77, 0.2); border-color: var(--wrong); box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
 
-        .feedback-box {
-            margin-top: 25px; padding: 20px; border-radius: 15px;
-            display: none; animation: fadeIn 0.5s;
-        }
+        .feedback-box { margin-top: 25px; padding: 20px; border-radius: 15px; display: none; animation: fadeIn 0.5s; }
+        .scroll-hint { margin-top: 20px; font-weight: bold; color: var(--accent); animation: bounce 2s infinite; display: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .scroll-hint {
-            margin-top: 20px; font-weight: bold; color: var(--accent);
-            animation: bounce 2s infinite; display: none;
-        }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
-        /* Приховати розділи тесту поки не дійдемо до них */
-        .quiz-section { display: none; scroll-snap-align: start; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
+        .quiz-section { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
@@ -178,9 +161,9 @@
             <div class="content-box">
                 <div class="text-side">
                     <h2>Що це за явище?</h2>
-                    <p>Масове розмноження <span class="highlight">ціанобактерій</span> — це не просто зміна кольору водойми. Ці мікроорганізми за сприятливих умов починають ділитися з геометричною прогресією, заповнюючи собою кожен сантиметр поверхні.</p>
-                    <p>Зелена плівка стає бар'єром для сонячних променів. Без світла підводні рослини припиняють фотосинтез і починають розкладатися. Це призводить до критичного зниження рівня кисню, що запускає процес "замору" риби.</p>
-                    <p>В результаті водойма втрачає здатність до самоочищення. Кисневе голодування перетворює живу річку на стояче болото, де процеси гниття переважають над життям.</p>
+                    <p>Масове розмноження <span class="highlight">ціанобактерій</span> — це не просто зміна кольору водойми. Ці мікроорганізми, які існують мільярди років, за сприятливих умов починають ділитися з геометричною прогресією, заповнюючи собою кожен сантиметр поверхні.</p>
+                    <p>Зелена плівка стає справжнім бар'єром для сонячних променів. Без світла підводні рослини припиняють фотосинтез і починають розкладатися. Це призводить до критичного зниження рівня кисню, що запускає процес "замору" риби та інших водних мешканців.</p>
+                    <p>В результаті водойма втрачає здатність до самоочищення. Кисневе голодування перетворює живу річку на стояче болото, де процеси гниття переважають над процесами життя.</p>
                 </div>
                 <div class="image-side">
                     <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння під мікроскопом">
@@ -192,20 +175,20 @@
             <div class="content-box" style="flex-direction: column; padding: 25px 40px;">
                 <div style="text-align: center; max-width: 1000px;">
                     <h2>Чому це відбувається?</h2>
-                    <p style="text-align: center;">Головна причина — надмірне потрапляння азоту та фосфору у воду. Для бактерій це агресивний стимулятор росту. Основними джерелами є людська діяльність.</p>
+                    <p style="text-align: center;">Головна причина цвітіння — це надмірне потрапляння поживних речовин (азоту та фосфору) у воду. Для ціанобактерій ці елементи діють як агресивний стимулятор росту. Екосистема не встигає переробляти такий об'єм "добрив", що призводить до біологічного вибуху.</p>
                 </div>
                 <div class="grid-info">
                     <div class="info-item">
                         <h3>Мийні засоби</h3>
-                        <p>Фосфати в порошках — ідеальне паливо. 1г фосфату провокує появу до 15кг водоростей.</p>
+                        <p>Фосфати у складі порошків — це ідеальне паливо. 1 грам фосфату може спровокувати появу до 15 кг водоростей, які миттєво поглинають весь кисень.</p>
                     </div>
                     <div class="info-item">
                         <h3>Агро-сектор</h3>
-                        <p>Добрива вимиваються з полів дощами і створюють постійний потік живлення для бактерій.</p>
+                        <p>Мінеральні добрива вимиваються з полів дощами та стікають у річки. Це створює постійний потік речовин, який підтримує цвітіння протягом усього сезону.</p>
                     </div>
                     <div class="info-item">
                         <h3>Греблі та спека</h3>
-                        <p>Річки втрачають швидкість, вода прогрівається швидше, створюючи "інкубатор" для бактерій.</p>
+                        <p>Через дамби річки втрачають швидкість, перетворюючись на каскади стоячих озер. Вода прогрівається значно швидше, створюючи "інкубатор" для бактерій.</p>
                     </div>
                 </div>
             </div>
@@ -214,12 +197,12 @@
         <section id="s4">
             <div class="content-box">
                 <div class="image-side">
-                    <img src="https://images.unsplash.com/photo-1621447508323-271221c803ac?q=80&w=2000" alt="Наслідки">
+                    <img src="https://images.unsplash.com/photo-1621447508323-271221c803ac?q=80&w=2000" alt="Забруднена вода">
                 </div>
                 <div class="text-side">
                     <h2>Приховані загрози</h2>
-                    <p>Цвітіння несе загрозу через <span class="highlight">мікроцистини</span> — токсини бактерій. Контакт викликає дерматити, алергії та отруєння. Ці речовини не руйнуються навіть при кип'ятінні.</p>
-                    <p>Під час гниття виділяються аміак та сірководень. Тварини, що п'ють таку воду, часто гинуть від інтоксикації, а водойма офіційно стає зоною екологічного лиха.</p>
+                    <p>Цвітіння води несе пряму загрозу через <span class="highlight">мікроцистини</span> — токсини бактерій. Контакт із такою водою викликає дерматити, алергії та отруєння. Ці речовини настільки стійкі, що не руйнуються навіть при кип'ятінні.</p>
+                    <p>Крім того, під час гниття водоростей у воду потрапляють аміак та сірководень. Це не тільки створює запах, але й робить воду мертвою. Тварини, що п'ють з таких джерел, часто гинуть від інтоксикації.</p>
                 </div>
             </div>
         </section>
@@ -227,12 +210,12 @@
         <section class="quiz-section" id="q1" data-q="1">
             <div class="quiz-container">
                 <h2>Питання 1/6</h2>
-                <p style="font-size: 1.5rem; text-align: center;">Хто є головним "винуватцем" цвітіння води?</p>
+                <p style="font-size: 1.5rem;">Хто є головним "винуватцем" цвітіння води?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ціанобактерії — це мікроскопічні організми, що заповнюють поверхню.')">Дрібні риби</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ціанобактерії — це мікроскопічні організми, що заповнюють поверхню.')">Підводні камені</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно! Саме ціанобактерії (синьо-зелені водорості) викликають це явище.')">Ціанобактерії</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ціанобактерії — це мікроскопічні організми, що заповнюють поверхню.')">Морські моржі</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми, що заповнюють поверхню.')">Дрібні риби</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми, що заповнюють поверхню.')">Підводні камені</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно! Саме ціанобактерії викликають це явище.')">Ціанобактерії</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми, що заповнюють поверхню.')">Морські моржі</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз для наступного питання ↓</div>
@@ -242,12 +225,12 @@
         <section class="quiz-section" id="q2" data-q="2">
             <div class="quiz-container">
                 <h2>Питання 2/6</h2>
-                <p style="font-size: 1.5rem; text-align: center;">Що створюють водорості на поверхні, блокуючи сонце?</p>
+                <p style="font-size: 1.5rem;">Що створюють водорості на поверхні, блокуючи сонце?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку, яка діє як ковдра.')">Крижаний панцир</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Вірно! Ця плівка не дає світлу потрапити до рослин на дні.')">Щільну "ковдру" або плівку</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку, яка діє як ковдра.')">Електричне поле</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку, яка діє як ковдра.')">Кораловий риф</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Крижаний панцир</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Вірно! Ця плівка не дає світлу потрапити до рослин.')">Щільну "ковдру" або плівку</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Електричне поле</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Кораловий риф</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -257,11 +240,11 @@
         <section class="quiz-section" id="q3" data-q="3">
             <div class="quiz-container">
                 <h2>Питання 3/6</h2>
-                <p style="font-size: 1.5rem; text-align: center;">Яка речовина з порошків є "супер-їжею" для бактерій?</p>
+                <p style="font-size: 1.5rem;">Яка речовина з порошків є "супер-їжею" для бактерій?</p>
                 <div class="options-grid">
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — це головний стимулятор росту.')">Сода</button>
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — це головний стимулятор росту.')">Ароматизатори</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Саме так! Фосфати стимулюють вибуховий ріст водоростей.')">Фосфати</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Саме так! Фосфати стимулюють вибуховий ріст.')">Фосфати</button>
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — це головний стимулятор росту.')">Відбілювач</button>
                 </div>
                 <div class="feedback-box"></div>
@@ -272,12 +255,12 @@
         <section class="quiz-section" id="q4" data-q="4">
             <div class="quiz-container">
                 <h2>Питання 4/6</h2>
-                <p style="font-size: 1.5rem; text-align: center;">Чому кип'ятіння не рятує "цвілу" воду?</p>
+                <p style="font-size: 1.5rem;">Чому кип'ятіння не рятує "цвілу" воду?</p>
                 <div class="options-grid">
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Вода стає гарячою</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Точно! Токсини бактерій витримують високі температури.')">Токсини не руйнуються при 100°C</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Точно! Токсини бактерій витримують температуру 100°C.')">Токсини не руйнуються при 100°C</button>
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Бактерії люблять окріп</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Зникає весь кисень</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини мікроцистини термостійкі.')">Зникає кисень</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -287,12 +270,12 @@
         <section class="quiz-section" id="q5" data-q="5">
             <div class="quiz-container">
                 <h2>Питання 5/6</h2>
-                <p style="font-size: 1.5rem; text-align: center;">Що відбувається з рибою, коли водорості гниють?</p>
+                <p style="font-size: 1.5rem;">Що відбувається з рибою, коли водорості гниють?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень, і риба задихається.')">Вона швидше росте</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень, і риба задихається.')">Вона змінює колір</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно. Кисень витрачається на гниття, риба гине.')">Гине через брак кисню</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень, і риба задихається.')">Вона їх їсть</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона швидше росте</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона змінює колір</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно. Кисень витрачається на гниття, риба задихається.')">Гине через брак кисню</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона їх їсть</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -302,57 +285,50 @@
         <section class="quiz-section" id="q6" data-q="6">
             <div class="quiz-container">
                 <h2>Питання 6/6</h2>
-                <p style="font-size: 1.5rem; text-align: center;">Який напис на упаковці побутової хімії допоможе річкам?</p>
+                <p style="font-size: 1.5rem;">Який напис на упаковці побутової хімії допоможе річкам?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Використання безфосфатних засобів зупиняє підживлення бактерій.')">Для ручного прання</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Використання безфосфатних засобів зупиняє підживлення бактерій.')">Ефект свіжості</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Абсолютно! Це найпростіший спосіб врятувати річки.')">Без фосфатів</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Використання безфосфатних засобів зупиняє підживлення бактерій.')">Велика упаковка</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб врятувати річки.')">Для ручного прання</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб врятувати річки.')">Ефект свіжості</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Абсолютно! Безфосфатні засоби — запорука здоров’я річок.')">Без фосфатів</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб врятувати річки.')">Велика упаковка</button>
                 </div>
                 <div class="feedback-box"></div>
-                <div class="scroll-hint">Тест пройдено! Гортай далі для фіналу ↓</div>
+                <div class="scroll-hint">Тест завершено! ↓</div>
             </div>
         </section>
     </div>
 
     <script>
         const container = document.getElementById('main-scroll');
-        const sections = document.querySelectorAll('section');
         const progressBar = document.getElementById('quiz-progress-bar');
         const flash = document.getElementById('flash-overlay');
-        let quizStarted = false;
-        let currentQuestion = 0;
+        let quizActive = false;
 
-        // Intersection Observer для появи тексту
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Логіка блокування повернення після 4 слайда
-                    if (entry.target.id === 'q1' && !quizStarted) {
-                        startQuiz();
+                    // Якщо догортали до кінця 4 слайда, активуємо квіз
+                    if (entry.target.id === 's4') {
+                        setTimeout(() => { document.getElementById('q1').style.display = 'flex'; }, 500);
                     }
                 }
             });
         }, { threshold: 0.5 });
-        sections.forEach(s => observer.observe(s));
 
-        function startQuiz() {
-            quizStarted = true;
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        function startQuizMechanics() {
+            quizActive = true;
             progressBar.style.display = 'block';
-            // Видаляємо минулі слайди для неможливості повернення
-            ['s1', 's2', 's3', 's4'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
-            });
-            // Показуємо перше питання
-            document.getElementById('q1').style.display = 'flex';
-            updateProgress(1);
+            ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).style.display = 'none');
             window.scrollTo(0, 0);
-            container.style.scrollSnapType = "none"; 
-            document.body.style.overflow = "hidden"; // Заборона скролу поки не відповість
+            document.body.style.overflow = "hidden"; 
         }
 
         function checkAnswer(btn, isCorrect, explanation) {
+            if (!quizActive) startQuizMechanics();
+
             const parent = btn.closest('.quiz-section');
             const feedback = parent.querySelector('.feedback-box');
             const hint = parent.querySelector('.scroll-hint');
@@ -375,14 +351,13 @@
 
             feedback.style.display = 'block';
             hint.style.display = 'block';
-            document.body.style.overflow = "auto"; // Дозволяємо скрол до наступного питання
+            document.body.style.overflow = "auto";
 
-            // Логіка переходу до наступного питання
             const qNum = parseInt(parent.dataset.q);
             if (qNum < 6) {
-                const nextQ = document.getElementById(`q${qNum + 1}`);
-                nextQ.style.display = 'flex';
+                document.getElementById(`q${qNum + 1}`).style.display = 'flex';
             }
+            updateProgress(qNum);
         }
 
         function triggerFlash(color) {
@@ -392,20 +367,8 @@
         }
 
         function updateProgress(qNum) {
-            const percent = (qNum / 6) * 100;
-            progressBar.style.width = percent + '%';
+            progressBar.style.width = (qNum / 6) * 100 + '%';
         }
-
-        // Оновлення прогрес-бару при скролі між питаннями
-        container.addEventListener('scroll', () => {
-            const quizSections = document.querySelectorAll('.quiz-section');
-            quizSections.forEach(qs => {
-                const rect = qs.getBoundingClientRect();
-                if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
-                    updateProgress(parseInt(qs.dataset.q));
-                }
-            });
-        });
     </script>
 </body>
 </html>
