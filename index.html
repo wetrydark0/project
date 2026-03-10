@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Цвітіння води - Проєкт</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
         :root {
-            --bg-dark: #050a18;
+            --bg-dark: #030712; /* Ще темніший для контрасту */
+            --water-deep: #0a1d2e;
+            --water-light: #1e3a8a;
             --accent: #00ffcc;
-            --accent-glow: rgba(0, 255, 204, 0.4);
+            --accent-glow: rgba(0, 255, 204, 0.3);
             --text: #ffffff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -24,37 +28,73 @@
             height: 100%;
             background-color: var(--bg-dark);
             color: var(--text);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
         }
 
-        /* --- ФОН ТА ЕФЕКТИ --- */
-        .ocean-bg {
+        /* --- НОВИЙ АТМОСФЕРНИЙ ФОН --- */
+        .ocean-floor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(to bottom, #061525 0%, #030712 100%);
+        }
+
+        .caustics {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #0a1d2e 0%, #050a18 100%);
+            overflow: hidden;
+            opacity: 0.6;
         }
 
-        .particles {
+        /* Плавні світлові плями */
+        .caustics::before, .caustics::after {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 30%, var(--accent-glow) 1px, transparent 1px),
-                radial-gradient(circle at 80% 70%, var(--accent-glow) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 40% 80%, #fff 1px, transparent 1px);
-            background-size: 100px 100px, 150px 150px, 200px 200px;
-            animation: drift 20s linear infinite;
-            opacity: 0.5;
+            width: 150vmax;
+            height: 150vmax;
+            top: -25vmax;
+            left: -25vmax;
+            background: radial-gradient(circle at center, #1e40af 0%, transparent 60%);
+            animation: swim 25s linear infinite;
+            opacity: 0.3;
         }
 
-        @keyframes drift {
+        .caustics::after {
+            background: radial-gradient(circle at center, #00ffcc 0%, transparent 60%);
+            animation: swim 35s linear infinite reverse;
+            animation-delay: -5s;
+            opacity: 0.15;
+        }
+
+        /* Маленькі частинки */
+        .floating-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 10%, #fff 1px, transparent 1px),
+                radial-gradient(circle at 90% 80%, #fff 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, var(--accent) 1px, transparent 1px);
+            background-size: 200px 200px;
+            animation: particleDrift 60s linear infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes swim {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20vmax, -20vmax) rotate(360deg); }
+        }
+
+        @keyframes particleDrift {
             from { transform: translateY(0); }
             to { transform: translateY(-1000px); }
         }
@@ -68,6 +108,7 @@
             scroll-snap-align: start;
             position: relative;
             padding: 40px;
+            background: transparent; /* Щоб було видно фон */
         }
 
         /* --- ГОЛОВНИЙ СЛАЙД (HERO) --- */
@@ -75,10 +116,10 @@
             font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 900;
             text-transform: uppercase;
-            background: linear-gradient(180deg, #fff 30%, var(--accent) 100%);
+            background: linear-gradient(180deg, #fff 40%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px var(--accent-glow));
+            filter: drop-shadow(0 0 20px rgba(0, 255, 204, 0.5));
             line-height: 1.1;
             text-align: center;
             margin-bottom: 15px;
@@ -90,14 +131,14 @@
             text-transform: uppercase;
             letter-spacing: 5px;
             color: var(--accent);
-            opacity: 0.8;
-            margin-bottom: 20px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
 
-        /* Зменшена пульсуюча штука */
         .author-wrapper {
             position: relative;
-            padding: 20px 30px; /* Зменшено відступи */
+            padding: 15px 25px;
         }
 
         .author-wrapper::before {
@@ -106,14 +147,14 @@
             top: 0; left: 0; right: 0; bottom: 0;
             border: 1px solid var(--accent);
             border-radius: 50px;
-            opacity: 0.2;
-            transform: scale(1.05); /* Зменшено масштаб */
+            opacity: 0.3;
+            transform: scale(1.02);
             animation: pulse-ring 3s infinite ease-in-out;
         }
 
         @keyframes pulse-ring {
-            0%, 100% { transform: scale(1.02); opacity: 0.1; }
-            50% { transform: scale(1.08); opacity: 0.25; }
+            0%, 100% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.05); opacity: 0.4; }
         }
 
         .authors {
@@ -126,17 +167,18 @@
         .author-card {
             background: var(--glass);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border);
             padding: 10px 20px;
             border-radius: 30px;
             text-align: left;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s ease;
         }
 
         .author-card:hover {
-            background: rgba(0, 255, 204, 0.1);
-            border-color: var(--accent);
-            transform: scale(1.05);
+            background: rgba(0, 255, 204, 0.05);
+            border-color: rgba(0, 255, 204, 0.3);
+            transform: translateY(-3px);
         }
 
         .author-card span {
@@ -144,16 +186,18 @@
             color: var(--accent);
             display: block;
             margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .mouse {
             width: 25px;
             height: 40px;
-            border: 2px solid var(--text);
+            border: 2px solid rgba(255,255,255,0.4);
             border-radius: 20px;
             position: absolute;
             bottom: 30px;
-            opacity: 0.6;
+            opacity: 0.8;
         }
         .mouse::before {
             content: '';
@@ -186,13 +230,14 @@
         .info-card {
             flex: 1;
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border);
             padding: 40px;
             border-radius: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             opacity: 0;
-            transform: translateX(-50px);
+            transform: translateY(30px);
             transition: all 1s ease-out;
         }
 
@@ -202,16 +247,18 @@
             border-radius: 40px;
             overflow: hidden;
             height: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
             opacity: 0;
-            transform: translateX(50px);
-            transition: all 1s ease-out;
+            transform: translateY(30px);
+            transition: all 1s ease-out 0.2s; /* Легка затримка */
         }
 
         .image-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: saturate(1.5) brightness(0.8);
+            filter: saturate(1.2) brightness(0.9);
         }
 
         .info-card h2 {
@@ -219,25 +266,33 @@
             color: var(--accent);
             margin-bottom: 20px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .info-card p {
             font-size: 1.1rem;
             line-height: 1.8;
             opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .info-card strong {
+            color: var(--accent);
+            font-weight: 700;
         }
 
         section.visible .info-card, section.visible .image-box {
             opacity: 1;
-            transform: translate(0);
+            transform: translateY(0);
         }
 
     </style>
 </head>
 <body>
 
-    <div class="ocean-bg">
-        <div class="particles"></div>
+    <div class="ocean-floor"></div>
+    <div class="caustics">
+        <div class="floating-particles"></div>
     </div>
 
     <section class="hero">
@@ -271,19 +326,20 @@
                 </p>
             </div>
             <div class="image-box">
-                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння води">
+                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння води у водоймі">
             </div>
         </div>
     </section>
 
     <script>
+        // Скрипт для активації анімацій при скролі
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.2 }); // Анімація спрацьовує раніше
 
         document.querySelectorAll('section').forEach(section => {
             observer.observe(section);
