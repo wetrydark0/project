@@ -8,9 +8,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
         :root {
-            --bg-dark: #030712; /* Ще темніший для контрасту */
+            --bg-dark: #030712;
             --water-deep: #0a1d2e;
-            --water-light: #1e3a8a;
             --accent: #00ffcc;
             --accent-glow: rgba(0, 255, 204, 0.3);
             --text: #ffffff;
@@ -34,36 +33,26 @@
             scroll-behavior: smooth;
         }
 
-        /* --- НОВИЙ АТМОСФЕРНИЙ ФОН --- */
+        /* --- ФОН --- */
         .ocean-floor {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
             background: linear-gradient(to bottom, #061525 0%, #030712 100%);
         }
 
         .caustics {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             overflow: hidden;
             opacity: 0.6;
         }
 
-        /* Плавні світлові плями */
         .caustics::before, .caustics::after {
             content: '';
             position: absolute;
-            width: 150vmax;
-            height: 150vmax;
-            top: -25vmax;
-            left: -25vmax;
+            width: 150vmax; height: 150vmax; top: -25vmax; left: -25vmax;
             background: radial-gradient(circle at center, #1e40af 0%, transparent 60%);
             animation: swim 25s linear infinite;
             opacity: 0.3;
@@ -72,31 +61,12 @@
         .caustics::after {
             background: radial-gradient(circle at center, #00ffcc 0%, transparent 60%);
             animation: swim 35s linear infinite reverse;
-            animation-delay: -5s;
             opacity: 0.15;
-        }
-
-        /* Маленькі частинки */
-        .floating-particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(circle at 10% 10%, #fff 1px, transparent 1px),
-                radial-gradient(circle at 90% 80%, #fff 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, var(--accent) 1px, transparent 1px);
-            background-size: 200px 200px;
-            animation: particleDrift 60s linear infinite;
-            opacity: 0.2;
         }
 
         @keyframes swim {
             0% { transform: translate(0, 0) rotate(0deg); }
             100% { transform: translate(-20vmax, -20vmax) rotate(360deg); }
-        }
-
-        @keyframes particleDrift {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1000px); }
         }
 
         section {
@@ -108,10 +78,9 @@
             scroll-snap-align: start;
             position: relative;
             padding: 40px;
-            background: transparent; /* Щоб було видно фон */
         }
 
-        /* --- ГОЛОВНИЙ СЛАЙД (HERO) --- */
+        /* --- СЛАЙД 1 (HERO) --- */
         .hero h1 {
             font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 900;
@@ -123,7 +92,6 @@
             line-height: 1.1;
             text-align: center;
             margin-bottom: 15px;
-            letter-spacing: 2px;
         }
 
         .hero p.subtitle {
@@ -131,9 +99,7 @@
             text-transform: uppercase;
             letter-spacing: 5px;
             color: var(--accent);
-            opacity: 0.9;
             margin-bottom: 30px;
-            text-shadow: 0 0 10px var(--accent-glow);
         }
 
         .author-wrapper {
@@ -147,8 +113,6 @@
             top: 0; left: 0; right: 0; bottom: 0;
             border: 1px solid var(--accent);
             border-radius: 50px;
-            opacity: 0.3;
-            transform: scale(1.02);
             animation: pulse-ring 3s infinite ease-in-out;
         }
 
@@ -158,58 +122,28 @@
         }
 
         .authors {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
         }
 
         .author-card {
             background: var(--glass);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border);
             padding: 10px 20px;
             border-radius: 30px;
-            text-align: left;
-            transition: 0.4s ease;
         }
 
-        .author-card:hover {
-            background: rgba(0, 255, 204, 0.05);
-            border-color: rgba(0, 255, 204, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .author-card span {
-            font-size: 10px;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .author-card span { font-size: 10px; color: var(--accent); display: block; }
 
         .mouse {
-            width: 25px;
-            height: 40px;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-radius: 20px;
-            position: absolute;
-            bottom: 30px;
-            opacity: 0.8;
+            width: 25px; height: 40px; border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 20px; position: absolute; bottom: 30px;
         }
+
         .mouse::before {
-            content: '';
-            width: 4px;
-            height: 8px;
-            background: var(--accent);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 8px;
-            border-radius: 2px;
-            animation: scroll-anim 2s infinite;
+            content: ''; width: 4px; height: 8px; background: var(--accent);
+            position: absolute; left: 50%; transform: translateX(-50%); top: 8px;
+            border-radius: 2px; animation: scroll-anim 2s infinite;
         }
 
         @keyframes scroll-anim {
@@ -217,7 +151,7 @@
             100% { opacity: 0; transform: translate(-50%, 15px); }
         }
 
-        /* --- ДРУГИЙ СЛАЙД (КОНТЕНТ) --- */
+        /* --- СТИЛІ ДЛЯ ТЕКСТОВИХ СЛАЙДІВ --- */
         .content-container {
             display: flex;
             align-items: center;
@@ -231,11 +165,9 @@
             flex: 1;
             background: var(--glass);
             backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border);
             padding: 40px;
             border-radius: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             opacity: 0;
             transform: translateY(30px);
             transition: all 1s ease-out;
@@ -243,107 +175,119 @@
 
         .image-box {
             flex: 1;
-            position: relative;
             border-radius: 40px;
             overflow: hidden;
             height: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             border: 1px solid var(--border);
             opacity: 0;
             transform: translateY(30px);
-            transition: all 1s ease-out 0.2s; /* Легка затримка */
+            transition: all 1s ease-out 0.2s;
         }
 
-        .image-box img {
+        .image-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        h2 { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; }
+        p { font-size: 1.1rem; line-height: 1.8; opacity: 0.9; margin-bottom: 15px; }
+        strong { color: var(--accent); }
+
+        /* СЛАЙД 3: ПРИЧИНИ (ЦЕНТРОВАНА КОМПОЗИЦІЯ) */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: saturate(1.2) brightness(0.9);
+            max-width: 1200px;
+            margin-top: 30px;
         }
 
-        .info-card h2 {
-            font-size: 2.5rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .reason-item {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s ease-out;
         }
 
-        .info-card p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            opacity: 0.9;
-            font-weight: 400;
-        }
+        .reason-item h3 { color: var(--accent); margin-bottom: 10px; font-size: 1.3rem; }
+        .reason-item p { font-size: 0.9rem; margin-bottom: 0; }
 
-        .info-card strong {
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        section.visible .info-card, section.visible .image-box {
+        /* АКТИВАЦІЯ АНІМАЦІЙ */
+        section.visible .info-card, 
+        section.visible .image-box,
+        section.visible .reason-item {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
+
+        section.visible .reason-item:nth-child(1) { transition-delay: 0.2s; }
+        section.visible .reason-item:nth-child(2) { transition-delay: 0.4s; }
+        section.visible .reason-item:nth-child(3) { transition-delay: 0.6s; }
 
     </style>
 </head>
 <body>
 
     <div class="ocean-floor"></div>
-    <div class="caustics">
-        <div class="floating-particles"></div>
-    </div>
+    <div class="caustics"></div>
 
     <section class="hero">
         <p class="subtitle">Проєкт з біології</p>
         <h1>Цвітіння води</h1>
-        
         <div class="author-wrapper">
             <div class="authors">
-                <div class="author-card">
-                    <span>Виконав учень:</span>
-                    <strong>Роман Бабельський</strong>
-                </div>
-                <div class="author-card">
-                    <span>Виконав учень:</span>
-                    <strong>Матвій Смольницький</strong>
-                </div>
+                <div class="author-card"><span>Виконав учень:</span><strong>Роман Бабельський</strong></div>
+                <div class="author-card"><span>Виконав учень:</span><strong>Матвій Смольницький</strong></div>
             </div>
         </div>
-
         <div class="mouse"></div>
     </section>
 
-    <section id="slide-about">
+    <section>
         <div class="content-container">
             <div class="info-card">
                 <h2>Що це таке?</h2>
-                <p>
-                    <strong>Цвітіння води</strong> — це природне явище, що проявляється в зміні забарвлення води внаслідок масового розмноження мікроскопічних водоростей та ціанобактерій. 
-                    <br><br>
-                    Вода може набувати не лише зеленого, а й синьо-зеленого, бурого або навіть червоного кольору. Це не просто естетична проблема, а серйозний сигнал про порушення екосистеми водойми.
-                </p>
+                <p><strong>Цвітіння води</strong> — це справжній "бенкет" мікроорганізмів. Коли умови стають ідеальними, один вид водоростей починає розмножуватися так швидко, що витісняє всіх інших.</p>
+                <p>Цікавий факт: 1 грам "зеленої каші" з озера може містити до <strong>1 мільярда</strong> клітин ціанобактерій. Це стародавні істоти, які живуть на Землі вже 3.5 мільярди років!</p>
             </div>
             <div class="image-box">
-                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння води у водоймі">
+                <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння води">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="info-card" style="max-width: 1200px; text-align: center; margin-bottom: 20px;">
+            <h2>Чому це відбувається?</h2>
+            <p>Вода не починає цвісти сама по собі. Для цього потрібен потужний "паливний коктейль", який найчастіше створює людина через свою діяльність.</p>
+        </div>
+        
+        <div class="reasons-grid">
+            <div class="reason-item">
+                <h3>Фосфати</h3>
+                <p>Мийні засоби та пральні порошки з фосфатами — це "стероїди" для водоростей. Одна молекула фосфору може породити 500 молекул біомаси планктону.</p>
+            </div>
+            <div class="reason-item">
+                <h3>Добрива</h3>
+                <p>Азот з полів змивається дощами в річки. Для водоростей це безкінечна їдальня, де вони ростуть у геометричній прогресії.</p>
+            </div>
+            <div class="reason-item">
+                <h3>Спека</h3>
+                <p>Глобальне потепління підігріває воду. Чим тепліша вода, тим менше в ній кисню і тим комфортніше там почуваються синьо-зелені водорості.</p>
             </div>
         </div>
     </section>
 
     <script>
-        // Скрипт для активації анімацій при скролі
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, { threshold: 0.2 }); // Анімація спрацьовує раніше
+        }, { threshold: 0.2 });
 
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
     </script>
 
 </body>
