@@ -8,14 +8,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
         :root {
-            /* Яскрава неонова палітра */
-            --bg-color: #001220; /* Насичений темно-синій */
-            --water-bright: #0077b6; /* Яскравий синій */
-            --accent: #00fff2; /* Яскравий неоновий бірюзовий */
-            --accent-glow: rgba(0, 255, 242, 0.6);
-            --text-main: #ffffff;
-            --glass-bg: rgba(0, 119, 182, 0.15); /* Блакитне скло */
-            --glass-border: rgba(0, 255, 242, 0.3);
+            /* Спокійніша, але глибока палітра */
+            --bg-color: #020b16; 
+            --water-deep: #05192d;
+            --accent: #00d4ff; 
+            --accent-glow: rgba(0, 212, 255, 0.3);
+            --text-main: #e6f1ff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,36 +30,33 @@
             scroll-behavior: smooth;
         }
 
-        /* --- ЯСКРАВИЙ ЖИВИЙ ФОН --- */
+        /* --- АТМОСФЕРНИЙ ФОН --- */
         .ocean-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
-            background: linear-gradient(180deg, #0096c7 0%, #001220 100%);
-            overflow: hidden;
+            background: radial-gradient(circle at 50% 0%, #0a243d 0%, #020b16 100%);
         }
 
-        /* Яскраві сонячні промені */
         .sun-rays {
             position: absolute;
-            top: -20%; left: 50%; width: 200%; height: 200%;
+            top: -30%; left: 50%; width: 200%; height: 200%;
             background: repeating-conic-gradient(from 0deg at 50% 0%, 
                 transparent 0deg, 
-                rgba(0, 255, 242, 0.1) 15deg, 
-                transparent 30deg);
-            filter: blur(30px);
-            animation: raysRotate 40s linear infinite;
+                rgba(0, 212, 255, 0.03) 10deg, 
+                transparent 20deg);
+            filter: blur(40px);
+            animation: raysRotate 60s linear infinite;
             transform-origin: top center;
         }
 
         .bubble {
             position: absolute;
             bottom: -100px;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), transparent);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 50%;
-            animation: rise 10s infinite ease-in;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: rise 12s infinite ease-in;
         }
 
         @keyframes raysRotate {
@@ -69,11 +66,10 @@
 
         @keyframes rise {
             0% { transform: translateY(0) scale(1); opacity: 0; }
-            20% { opacity: 0.6; }
-            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+            20% { opacity: 0.3; }
+            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
         }
 
-        /* --- СТИЛІ СЕКЦІЙ --- */
         section {
             height: 100vh;
             display: flex;
@@ -86,86 +82,62 @@
         }
 
         /* --- ГОЛОВНИЙ СЛАЙД --- */
-        .hero p.top-title {
-            letter-spacing: 12px;
-            color: var(--accent);
-            margin-bottom: 10px;
-            font-weight: 700;
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
-
         .hero h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
             font-weight: 900;
             text-transform: uppercase;
-            color: #ffffff;
-            /* Сильне світіння заголовка */
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px var(--accent-glow);
+            text-shadow: 0 0 30px var(--accent-glow);
             text-align: center;
             line-height: 1.1;
         }
 
         .author-wrapper {
-            position: relative;
             margin-top: 40px;
             padding: 15px 35px;
-            background: rgba(0,0,0,0.3);
-            border: 2px solid var(--accent);
+            border: 1px solid var(--accent);
             border-radius: 50px;
-            /* Яскраве світіння рамки */
-            box-shadow: 0 0 20px var(--accent-glow);
-            animation: pulse-border 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse-border {
-            0%, 100% { box-shadow: 0 0 20px var(--accent-glow); border-color: var(--accent); }
-            50% { box-shadow: 0 0 35px var(--accent-glow); border-color: #ffffff; }
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .authors { display: flex; gap: 25px; }
-        .author-card { text-align: left; }
-        .author-card span { font-size: 11px; color: var(--accent); display: block; text-transform: uppercase; letter-spacing: 1px; }
-        .author-card strong { font-size: 1.1rem; }
+        .author-card span { font-size: 11px; color: var(--accent); display: block; text-transform: uppercase; }
 
         /* --- КОНТЕНТ --- */
         .content-box {
-            max-width: 1200px;
+            max-width: 1150px;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             border-radius: 40px;
             padding: 50px;
             display: flex;
             gap: 50px;
             align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(40px);
             transition: all 1s ease-out;
         }
 
         section.visible .content-box { opacity: 1; transform: translateY(0); }
 
         .text-side { flex: 1.6; }
-        .image-side { flex: 1; height: 380px; border-radius: 30px; overflow: hidden; border: 2px solid var(--glass-border); box-shadow: 0 0 20px rgba(0, 255, 242, 0.2); }
+        .image-side { flex: 1; height: 380px; border-radius: 30px; overflow: hidden; border: 1px solid var(--glass-border); }
         .image-side img { width: 100%; height: 100%; object-fit: cover; }
 
-        h2 { font-size: 2.8rem; color: #ffffff; text-shadow: 0 0 15px var(--accent-glow); margin-bottom: 25px; text-transform: uppercase; }
-        p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 18px; text-align: justify; color: #f0f0f0; }
-        .highlight { color: var(--accent); font-weight: bold; text-shadow: 0 0 10px var(--accent-glow); }
+        h2 { font-size: 2.5rem; color: var(--accent); margin-bottom: 25px; text-transform: uppercase; }
+        p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 18px; text-align: justify; color: #ced4da; }
+        .highlight { color: var(--accent); font-weight: bold; }
 
         /* Грід для причин */
-        .grid-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 30px; width: 100%; }
+        .grid-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; width: 100%; }
         .info-item {
-            background: rgba(0,0,0,0.4);
-            padding: 30px;
+            background: rgba(255,255,255,0.02);
+            padding: 25px;
             border-radius: 30px;
-            border: 2px solid var(--glass-border);
+            border: 1px solid var(--glass-border);
             text-align: center;
-            transition: 0.3s;
         }
-        .info-item:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 0 25px var(--accent-glow); }
-        .info-item h3 { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); margin-bottom: 15px; font-size: 1.4rem; }
+        .info-item h3 { color: var(--accent); margin-bottom: 15px; font-size: 1.3rem; }
 
     </style>
 </head>
@@ -173,15 +145,15 @@
 
     <div class="ocean-bg">
         <div class="sun-rays"></div>
-        </div>
+    </div>
 
     <section class="hero visible">
-        <p class="top-title">БІОЛОГІЯ</p>
+        <p style="letter-spacing: 8px; color: var(--accent); margin-bottom: 10px;">БІОЛОГІЧНИЙ ПРОЄКТ</p>
         <h1>Цвітіння води</h1>
         <div class="author-wrapper">
             <div class="authors">
-                <div class="author-card"><span>Розробка:</span><strong>Роман Бабельський</strong></div>
-                <div class="author-card"><span>Текст:</span><strong>Матвій Смольницький</strong></div>
+                <div class="author-card"><span>Виконавець:</span><strong>Роман Бабельський</strong></div>
+                <div class="author-card"><span>Виконавець:</span><strong>Матвій Смольницький</strong></div>
             </div>
         </div>
     </section>
@@ -190,8 +162,8 @@
         <div class="content-box">
             <div class="text-side">
                 <h2>Чому вода зеленіє?</h2>
-                <p>Багато хто думає, що зелена вода влітку — це просто через спеку. Насправді ж, це справжній вибух життя <span class="highlight">ціанобактерій</span>. Вони настільки старі, що жили на Землі ще задовго до динозаврів. Їх ще називають синьо-зеленими водоростями.</p>
-                <p>Коли вода прогрівається, вони починають ділитися з шаленою швидкістю, заповнюючи все собою. Ця зелена плівка на поверхні працює як щільна ковдра: вона не пропускає сонячне світло на глибину. Підводні рослини без сонця гинуть і перестають виробляти кисень, через що риба задихається.</p>
+                <p>Багато хто думає, що зелена вода влітку — це нормальний стан природи під час спеки. Насправді ми бачимо аномально швидке розмноження мікроскопічних істот, яких називають <span class="highlight">ціанобактеріями</span>.</p>
+                <p>Ці бактерії утворюють на поверхні води щільну "ковдру", яка не пропускає сонячне світло вглиб. Через це підводні рослини не можуть проводити фотосинтез і гинуть. А коли ціанобактерії починають відмирати самі, на їхнє гниття витрачається весь кисень у воді, що призводить до загибелі риби.</p>
             </div>
             <div class="image-side">
                 <img src="https://images.unsplash.com/photo-1584281722572-6893604f2d3a?q=80&w=2070" alt="Цвітіння води близько">
@@ -201,22 +173,22 @@
 
     <section>
         <div class="content-box" style="flex-direction: column;">
-            <div style="text-align: center; max-width: 850px;">
+            <div style="text-align: center; max-width: 950px;">
                 <h2>Чому це відбувається?</h2>
-                <p>Річки не починають цвісти просто так. Для цього їм потрібна "супер-їжа", яку ми, люди, самі їм даємо. Найголовніший ворог — це <span class="highlight">фосфати</span>.</p>
+                <p>Наші річки не починають цвісти самі по собі. Насправді це результат того, що ми "годуємо" водойми речовинами, які у звичайній природі зустрічаються в дуже малих кількостях. Для водоростей це як <span class="highlight">"супер-їжа"</span> або допінг, який змушує їх рости в сотні разів швидше. Головним каталізатором цієї катастрофи є фосфати — сполуки, які людина створила для власного комфорту, не замислюючись про наслідки для екології.</p>
             </div>
             <div class="grid-info">
                 <div class="info-item">
                     <h3>Мийні засоби</h3>
-                    <p>Пральні порошки та мийні засоби з фосфатами — це ідеальне добриво. Лише 1 грам фосфату може викликати ріст кілограмів водоростей.</p>
+                    <p>Більшість пральних порошків містять фосфати. Коли ця вода потрапляє в річку, вона стає ідеальним добривом. 1 грам фосфату може спровокувати ріст до 10 кг водоростей.</p>
                 </div>
                 <div class="info-item">
-                    <h3>Поля та ферми</h3>
-                    <p>Дощі змивають мінеральні добрива з полів прямо в річки. Для водоростей це як безкінечний "шведський стіл", тому вони ростуть без зупинки.</p>
+                    <h3>Добрива з полів</h3>
+                    <p>Під час дощів мінеральні добрива вимиваються з сільськогосподарських угідь і стікають у водойми. Це створює "бенкет" для бактерій, який триває ціле літо.</p>
                 </div>
                 <div class="info-item">
-                    <h3>Спекотна погода</h3>
-                    <p>Глобальне потепління підігріває воду. Чим тепліша вода, тим комфортніше там почуваються ці бактерії, і тим швидше вони розмножуються.</p>
+                    <h3>Застій та спека</h3>
+                    <p>Через дамби течія річок сповільнюється, а вода прогрівається швидше. В такій стоячій "теплій ванні" ціанобактерії почуваються найкраще.</p>
                 </div>
             </div>
         </div>
@@ -229,23 +201,21 @@
             </div>
             <div class="text-side">
                 <h2>Яка в цьому загроза?</h2>
-                <p>Цвітіння води — це не тільки візуальна проблема. Це серйозна екологічна катастрофа. Бактерії не тільки забирають кисень, але й виділяють небезпечні <span class="highlight">токсини</span>. Ці отрути можуть викликати сильні алергії у людей, які просто поплавали у такій воді.</p>
-                <p>Тварини, що п'ють таку воду, можуть сильно отруїтися. А риба масово гине через брак повітря. Ба більше, ці токсини не зникають, навіть якщо воду закип'ятити.</p>
-                <p><strong>Для довідки:</strong> Деякі з цих токсинів за своєю дією в десятки разів сильніші за отруту багатьох змій.</p>
+                <p>Цвітіння — це не тільки про колір і запах. Це небезпека для здоров'я. Ціанобактерії виділяють <span class="highlight">токсини</span>, які можуть викликати алергію, висипи на шкірі або навіть серйозні отруєння при випадковому ковтанні води.</p>
+                <p>Для природи це означає появу "мертвих зон", де немає кисню і не може жити нічого, крім самих бактерій. Цікаво, що ці токсини настільки стійкі, що навіть кип'ятіння води не робить її повністю безпечною.</p>
             </div>
         </div>
     </section>
 
     <script>
-        // Додаємо багато бульбашок для глибини та яскравості
         const bg = document.querySelector('.ocean-bg');
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 25; i++) {
             const b = document.createElement('div');
             b.className = 'bubble';
-            const size = Math.random() * 20 + 8 + 'px';
+            const size = Math.random() * 15 + 5 + 'px';
             b.style.width = size; b.style.height = size;
             b.style.left = Math.random() * 100 + '%';
-            b.style.animationDuration = Math.random() * 6 + 7 + 's';
+            b.style.animationDuration = Math.random() * 5 + 7 + 's';
             b.style.animationDelay = Math.random() * 10 + 's';
             bg.appendChild(b);
         }
