@@ -6,11 +6,12 @@
     <title>Цвітіння води - Проєкт</title>
     <style>
         :root {
-            --bg-color: #0b132b;
-            --accent-color: #00ffcc;
-            --text-color: #f0f0f0;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #050a18;
+            --accent: #00ffcc;
+            --accent-glow: rgba(0, 255, 204, 0.4);
+            --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -21,170 +22,188 @@
 
         body, html {
             height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            /* Вмикаємо Scroll Snap */
             scroll-snap-type: y mandatory;
         }
 
-        /* ПЛАВАЮЧИЙ ФОН */
-        .bg-animation {
+        /* --- ФОН ТА ЕФЕКТИ --- */
+        .ocean-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #1c3540 0%, #0b132b 100%);
-            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #0a1d2e 0%, #050a18 100%);
         }
 
-        .blob {
+        /* Частинки "планктон" */
+        .particles {
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: var(--accent-color);
-            filter: blur(150px);
-            opacity: 0.1;
-            border-radius: 50%;
-            animation: move 20s infinite alternate;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, var(--accent-glow) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, var(--accent-glow) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 40% 80%, #fff 1px, transparent 1px);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            animation: drift 20s linear infinite;
+            opacity: 0.5;
         }
 
-        @keyframes move {
-            from { transform: translate(-10%, -10%); }
-            to { transform: translate(20%, 20%); }
+        @keyframes drift {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
         }
 
-        /* КОНТЕЙНЕР ДЛЯ СЛАЙДІВ */
         section {
             height: 100vh;
-            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
-            /* Кожен слайд "приклеюється" при скролі */
             scroll-snap-align: start;
+            position: relative;
             padding: 20px;
-            overflow: hidden;
         }
 
-        /* ПЕРШИЙ СЛАЙД (HERO) */
+        /* --- ГОЛОВНИЙ СЛАЙД --- */
         .hero h1 {
-            font-size: clamp(2.5rem, 10vw, 5.5rem);
+            font-size: clamp(3rem, 12vw, 7rem);
+            font-weight: 900;
             text-transform: uppercase;
+            background: linear-gradient(180deg, #fff 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px var(--accent-glow));
+            line-height: 0.9;
             text-align: center;
-            color: var(--accent-color);
-            text-shadow: 0 0 25px rgba(0, 255, 204, 0.4);
-            letter-spacing: 4px;
-            line-height: 1.1;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
         }
 
         .hero p.subtitle {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            margin-top: 20px;
-            opacity: 0.7;
-            letter-spacing: 2px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-bottom: 40px;
         }
 
-        /* КАРТКИ АВТОРІВ */
+        /* Декоративне кільце навколо імена */
+        .author-wrapper {
+            position: relative;
+            padding: 40px;
+        }
+
+        .author-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px solid var(--accent);
+            border-radius: 100px;
+            opacity: 0.2;
+            transform: scale(1.1);
+            animation: pulse-ring 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1.1); opacity: 0.1; }
+            50% { transform: scale(1.15); opacity: 0.3; }
+        }
+
         .authors {
-            margin-top: 60px;
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         .author-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            padding: 15px 30px;
-            border-radius: 50px; /* Округлі як бульбашки */
-            transition: all 0.3s ease;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-align: left;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .author-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 204, 0.1);
+            background: rgba(0, 255, 204, 0.1);
+            border-color: var(--accent);
+            transform: scale(1.05);
         }
 
         .author-card span {
+            font-size: 10px;
+            color: var(--accent);
             display: block;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--accent-color);
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
-        /* ПІДКАЗКА СКРОЛУ */
-        .scroll-hint {
+        /* Стрілочка вниз */
+        .mouse {
+            width: 25px;
+            height: 40px;
+            border: 2px solid var(--text);
+            border-radius: 20px;
             position: absolute;
             bottom: 30px;
-            animation: bounce 2s infinite;
-            opacity: 0.5;
+            opacity: 0.6;
+        }
+        .mouse::before {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: var(--accent);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 8px;
+            border-radius: 2px;
+            animation: scroll-anim 2s infinite;
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-        /* ДРУГИЙ СЛАЙД (ЗАГОТОВКА) */
-        .slide-content {
-            max-width: 900px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            transform: scale(0.9);
-            transition: transform 1s ease;
-        }
-
-        /* Коли слайд стає видимим (реалізуємо через JS пізніше або просто CSS для початку) */
-        section:not(.hero) {
-             background: rgba(0,0,0,0.2);
+        @keyframes scroll-anim {
+            0% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, 15px); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="bg-animation">
-        <div class="blob"></div>
+    <div class="ocean-bg">
+        <div class="particles"></div>
     </div>
 
     <section class="hero">
-        <h1>Цвітіння води</h1>
-        <p class="subtitle">Екологічний проєкт з біології</p>
-
-        <div class="authors">
-            <div class="author-card">
-                <span>Виконав:</span>
-                Роман Бабельський
-            </div>
-            <div class="author-card">
-                <span>Виконав:</span>
-                Матвій Смольницький
+        <p class="subtitle">Biology Project</p>
+        <h1>Цвітіння<br>води</h1>
+        
+        <div class="author-wrapper">
+            <div class="authors">
+                <div class="author-card">
+                    <span>Виконав учень:</span>
+                    <strong>Роман Бабельський</strong>
+                </div>
+                <div class="author-card">
+                    <span>Виконав учень:</span>
+                    <strong>Матвій Смольницький</strong>
+                </div>
             </div>
         </div>
 
-        <div class="scroll-hint">Гортайте вниз ↓</div>
+        <div class="mouse"></div>
     </section>
 
-    <section id="slide2">
-        <div class="slide-content">
-            <h2 style="color: var(--accent-color); margin-bottom: 20px;">Що це за явище?</h2>
-            <p style="font-size: 1.2rem; line-height: 1.6;">Тут буде наш цікавий текст про ціанобактерії та "зелену" воду. Бачиш, як плавно спрацював перехід?</p>
-        </div>
+    <section style="background: rgba(0,0,0,0.3);">
+        <h2 style="color: var(--accent);">Далі буде контент...</h2>
     </section>
 
 </body>
