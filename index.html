@@ -29,7 +29,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- ПЕРЕВІРЕНИЙ ЖИВИЙ ФОН --- */
+        /* --- ФОН --- */
         .ocean-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -37,7 +37,6 @@
             background: linear-gradient(180deg, #05192d, #010811, #0a243d);
             background-size: 100% 300%;
             animation: oceanFlow 10s ease infinite;
-            transition: opacity 0.5s;
         }
 
         .bg-rays {
@@ -60,7 +59,6 @@
             position: absolute;
             bottom: -20px;
             background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             animation: bubbleUp 8s linear infinite;
         }
@@ -101,15 +99,6 @@
             display: none;
         }
 
-        #flash-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
         section {
             height: 100vh;
             display: flex;
@@ -119,16 +108,7 @@
             scroll-snap-align: start;
             position: relative;
             padding: 20px;
-            background: transparent;
         }
-
-        .hero-title-wrap { position: relative; padding: 40px; text-align: center; }
-        .hero-title-wrap::before, .hero-title-wrap::after {
-            content: ''; position: absolute; width: 60px; height: 60px;
-            border: 2px solid var(--accent); filter: drop-shadow(0 0 10px var(--accent));
-        }
-        .hero-title-wrap::before { top: 0; left: 0; border-right: none; border-bottom: none; }
-        .hero-title-wrap::after { bottom: 0; right: 0; border-left: none; border-top: none; }
 
         .hero h1 {
             font-size: clamp(2.5rem, 8vw, 5.5rem);
@@ -138,12 +118,19 @@
             text-shadow: 0 0 20px var(--accent-glow);
         }
 
+        .hero-title-wrap { position: relative; padding: 40px; text-align: center; }
+        .hero-title-wrap::before, .hero-title-wrap::after {
+            content: ''; position: absolute; width: 60px; height: 60px;
+            border: 2px solid var(--accent);
+        }
+        .hero-title-wrap::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .hero-title-wrap::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+
         .author-wrapper {
             margin-top: 30px; padding: 10px 25px;
             border: 1px solid var(--accent); border-radius: 50px;
             background: rgba(0, 212, 255, 0.05);
         }
-
         .authors { display: flex; gap: 30px; }
         .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; }
 
@@ -158,106 +145,66 @@
         }
 
         section.visible .content-box { opacity: 1; transform: translateY(0); }
-        .text-side { flex: 1.7; }
-        .image-side { flex: 1; height: 350px; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); }
+
+        .content-box.item-active h2, 
+        .content-box.item-active > div:not(.grid-info) p,
+        .content-box.item-active .info-item:not(.centered),
+        .content-box.item-active .text-side,
+        .content-box.item-active .image-side {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .text-side { flex: 1.7; transition: opacity 0.4s ease; }
+        .image-side { flex: 1; height: 350px; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); transition: opacity 0.4s ease; }
         .image-side img { width: 100%; height: 100%; object-fit: cover; }
-        h2 { font-size: 1.8rem; color: #fff; margin-bottom: 12px; text-transform: uppercase; text-shadow: 0 0 10px var(--accent-glow); }
-        p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; text-align: justify; color: #d1d9e0; }
+
+        h2 { font-size: 1.8rem; color: #fff; margin-bottom: 12px; text-transform: uppercase; transition: opacity 0.4s ease; }
+        p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; text-align: justify; color: #d1d9e0; transition: opacity 0.4s ease; }
         .highlight { color: var(--accent); font-weight: bold; }
 
         .grid-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; width: 100%; }
-        
-        /* ЗАТЕМНЕННЯ ФОНУ */
-        .overlay-black {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 50;
-            transition: opacity 0.5s ease;
-        }
-        body.dimmed .overlay-black { opacity: 1; pointer-events: auto; }
 
         .info-item { 
-            background: rgba(255,255,255,0.02); 
-            padding: 20px; 
-            border-radius: 20px; 
-            border: 1px solid var(--glass-border); 
-            cursor: pointer;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s, border-color 0.5s;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
+            background: rgba(255,255,255,0.02); padding: 20px; border-radius: 20px; 
+            border: 1px solid var(--glass-border); cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .info-item.centered {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1.2);
-            width: 500px;
-            max-width: 90vw;
-            z-index: 100;
-            background: #010811;
-            border-color: var(--accent);
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(1.15);
+            width: 500px; max-width: 90vw; z-index: 100;
+            background: #010811; border-color: var(--accent);
             box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
-            cursor: pointer;
         }
 
-        .extra-info {
-            display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--glass-border);
-            animation: fadeIn 0.5s forwards;
-        }
+        .extra-info { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border); animation: fadeIn 0.5s forwards; }
         .info-item.centered .extra-info { display: block; }
-
         .info-item h3 { color: var(--accent); margin-bottom: 8px; font-size: 1.1rem; text-align: center; }
-        .info-item p { font-size: 0.85rem; line-height: 1.5; text-align: center; margin-bottom: 0; }
 
         .quiz-container { text-align: center; max-width: 800px; width: 100%; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .option-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: 15px; color: #fff; cursor: pointer; transition: 0.3s;
-        }
-        .option-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-        .option-btn.correct { background: rgba(0, 255, 136, 0.2); border-color: var(--correct); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-        .option-btn.wrong { background: rgba(255, 77, 77, 0.2); border-color: var(--wrong); box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
+        .option-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 20px; border-radius: 15px; color: #fff; cursor: pointer; transition: 0.3s; }
+        .option-btn:hover { border-color: var(--accent); }
+        .option-btn.correct { background: rgba(0, 255, 136, 0.2); border-color: var(--correct); }
+        .option-btn.wrong { background: rgba(255, 77, 77, 0.2); border-color: var(--wrong); }
 
         .feedback-box { margin-top: 25px; padding: 20px; border-radius: 15px; display: none; animation: fadeIn 0.5s; }
         .scroll-hint { margin-top: 20px; font-weight: bold; color: var(--accent); animation: bounce 2s infinite; display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
 
         .quiz-section { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
-        
-        .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1100px; margin-top: 30px; }
-        .final-card {
-            background: var(--glass-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border);
-            text-align: center; transition: 0.3s;
-        }
-        .final-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .final-card h3 { color: var(--accent); margin-bottom: 15px; text-transform: uppercase; }
-        .final-card p { text-align: center; font-size: 0.9rem; margin-bottom: 0; }
-        
-        .restart-btn {
-            margin-top: 40px; padding: 15px 40px; border: 1px solid var(--accent);
-            background: transparent; color: var(--accent); border-radius: 50px;
-            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
-            font-weight: bold; transition: 0.3s;
-        }
-        .restart-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
+        .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; margin-top: 30px; }
+        .final-card { background: var(--glass-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; }
+        .restart-btn { margin-top: 40px; padding: 15px 40px; border: 1px solid var(--accent); background: transparent; color: var(--accent); border-radius: 50px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="overlay-black"></div>
     <div id="quiz-progress-bar"></div>
-    <div id="flash-overlay"></div>
-    
     <div class="ocean-bg"></div>
     <div class="bg-rays"></div>
     <div class="bubbles-container" id="bubbles"></div>
@@ -282,7 +229,7 @@
                     <h2>Що це за явище?</h2>
                     <p>Масове розмноження <span class="highlight">ціанобактерій</span> (синьо-зелених водоростей) — це складна екологічна криза. Ці мікроорганізми існують мільярди років, але за певних умов їх чисельність зростає вибухоподібно. Коли температура води перевищує 20°C, а рівень поживних речовин стає занадто високим, починається процес, який перетворює прозору воду на густу "зелену кашу", що простягається на кілометри вздовж русла.</p>
                     <p>Щільна плівка на поверхні діє як сонячний екран. Вона повністю блокує доступ світла до глибинних шарів, через що підводні рослини втрачають можливість фотосинтезувати. Це запускає ланцюгову реакцію: замість того, щоб виробляти кисень, підводна флора починає масово вмирати. Бактерії, що розкладають ці рештки, споживають останні запаси розчиненого кисню, створюючи "мертві зони", де не може вижити жодна риба.</p>
-                    <p>Найстрашніше відбувається вночі: самі бактерії починають активно поглинати залишки кисню для дихання. Це призводить до явища "замору" — масової загибелі риб, молюсків та ракоподібних, які буквально задихаються у власній домівці. Річка, що колись була джерелом життя, поступово деградує, перетворюючись на болото, яке виділяє токсичні випари та стає непридатним для будь-якого використання.</p>
+                    <p>Найстрашніше відбувається вночі: самі бактерії починають активно поглинати залишки кисню для дихання. Це призводить до явища "замору" — масової загибелі риб, молюсків та ракоподібних, які буквально задихаються у власній домівці.</p>
                 </div>
                 <div class="image-side">
                     <img src="Images1/mikro.jpg" alt="Цвітіння під мікроскопом">
@@ -294,28 +241,28 @@
             <div class="content-box" style="flex-direction: column;">
                 <div style="text-align: center; max-width: 1000px;">
                     <h2>Чому це відбувається?</h2>
-                    <p style="text-align: center;">Цвітіння не є випадковістю — це результат глибокого порушення біологічного балансу, спричиненого діяльністю людини. Головним паливом для цього процесу є <span class="highlight">евтрофікація</span>: критичне перенасичення води сполуками азоту та фосфору. Ці хімічні елементи діють на бактерії як потужні стимулятори, змушуючи їх ділитися з неймовірною швидкістю, яку природні механізми самоочищення вже не здатні контролювати.</p>
+                    <p style="text-align: center;">Цвітіння не є випадковістю — це результат глибокого порушення біологічного балансу, спричиненого діяльністю людини. Головним паливом для цього процесу є <span class="highlight">евтрофікація</span>: критичне перенасичення води сполуками азоту та фосфору.</p>
                 </div>
                 <div class="grid-info">
                     <div class="info-item" onclick="toggleCenter(this)">
                         <h3>Побутова хімія</h3>
                         <p>Більшість пральних порошків містять фосфати, які не затримуються очисними спорудами.</p>
                         <div class="extra-info">
-                            <p>Очисні станції більшості міст були спроектовані десятки років тому і не розраховані на фільтрацію розчинених хімікатів. Кожен грам фосфатів стає початком ланцюгової реакції, провокуючи ріст 10-15 кг водоростей. Через наші пральні машини в річки потрапляють мільйони тонн "добрива" для бактерій щорічно.</p>
+                            <p>Очисні станції більшості міст були спроектовані десятки років тому і не розраховані на фільтрацію розчинених хімікатів. Кожен грам фосфатів стає початком ланцюгової реакції, провокуючи ріст 10-15 кг водоростей. Фосфор — це ідеальне добриво, яке потрапляє в каналізацію, а звідти безпосередньо у відкриті водойми, де стає основою раціону для синьо-зелених водоростей.</p>
                         </div>
                     </div>
                     <div class="info-item" onclick="toggleCenter(this)">
                         <h3>Сільське господарство</h3>
                         <p>Надлишок мінеральних добрив змивається з полів під час дощів і стікає в річки.</p>
                         <div class="extra-info">
-                            <p>Сучасне агровиробництво використовує величезну кількість нітратів. Коли йдуть опади, родючий шар змивається безпосередньо у водойми. Цей постійний "потік поживних речовин" створює ідеальне середовище для ціанобактерій, дозволяючи їм розмножуватися навіть у проточній воді.</p>
+                            <p>Сучасне агровиробництво використовує величезну кількість нітратів та азотних добрив для підвищення врожайності. Коли йдуть зливи або тане сніг, родючий шар ґрунту разом із залишками хімії змивається безпосередньо у прилеглі водойми. Цей постійний "потік поживних речовин" створює ідеальне середовище для ціанобактерій, дозволяючи їм розмножуватися з неймовірною швидкістю.</p>
                         </div>
                     </div>
                     <div class="info-item" onclick="toggleCenter(this)">
                         <h3>Глобальне потепління</h3>
                         <p>Висока температура води та слабка течія створюють ефект інкубатора.</p>
                         <div class="extra-info">
-                            <p>Через будівництво дамб та гребель природна швидкість течії річок впала в десятки разів. Вода застоюється і прогрівається значно швидше та глибше. У такій "теплій ванні" бактерії відчувають себе найкраще, отримуючи величезну фору у розвитку порівняно з іншими видами.</p>
+                            <p>Через будівництво великої кількості дамб, гребель та водосховищ природна швидкість течії річок впала в десятки разів. Вода застоюється і прогрівається значно швидше та глибше. Чим тепліша вода, тим менше в ній кисню і тим комфортніше в ній почуваються бактерії. Спекотне літо без вітру перетворює наші річки на величезні закриті басейни, де процес цвітіння стає незворотним.</p>
                         </div>
                     </div>
                 </div>
@@ -329,9 +276,9 @@
                 </div>
                 <div class="text-side">
                     <h2>Приховані загрози</h2>
-                    <p>Крім візуального забруднення, ціанобактерії виробляють небезпечні <span class="highlight">мікроцистини</span>. Ці біологічні токсини є одними з найсильніших у природі. Вони вражають шкіру, печінку та центральну нервову систему. Навіть коротке купання в такій воді може призвести до сильних алергічних висипань, подразнення слизових оболонок та тривалих проблем зі здоров'ям.</p>
-                    <p>У процесі гниття величезної маси водоростей у воду виділяються аміак, метан та сірководень. Ці гази мають різкий неприємний запах, який чутно на сотні метрів від берега. Але запах — це лише сигнал про небезпеку. Вода стає насиченою продуктами розпаду, що робить її токсичною для худоби та диких тварин, які приходять на водопій, викликаючи масові отруєння та загибель.</p>
-                    <p>Найбільша небезпека полягає в тому, що ці токсини надзвичайно стійкі до зовнішніх впливів. Сучасні міські системи водопостачання не завжди здатні повністю знешкодити такі сполуки. Звичайне кип'ятіння в домашніх умовах лише вбиває самі бактерії, але ніяк не впливає на їхні отруйні виділення, які залишаються активними та небезпечними для організму людини навіть після термічної обробки.</p>
+                    <p>Крім візуального забруднення, ціанобактерії виробляють небезпечні <span class="highlight">мікроцистини</span>. Ці біологічні токсини є одними з найсильніших у природі. Вони вражають шкіру, викликаючи алергічні реакції, при потраплянні всередину організму пошкоджують печінку та можуть негативно впливати на центральну нервову систему людини та тварин.</p>
+                    <p>У процесі гниття величезної маси водоростей у воду виділяються аміак, метан та сірководень. Ці гази мають різкий неприємний запах, який чутно на сотні метрів від берега, і роблять воду абсолютно непридатною не тільки для пиття, але й для технічних потреб або купання.</p>
+                    <p>Найбільша небезпека полягає в тому, що ці токсини надзвичайно стійкі. Звичайне кип'ятіння в домашніх умовах лише вбиває самі бактерії, але ніяк не впливає на їхні отруйні виділення. Хімічні сполуки залишаються у воді навіть після термічної обробки, що робить таку воду небезпечною для здоров'я навіть після фільтрації.</p>
                 </div>
             </div>
         </section>
@@ -341,10 +288,10 @@
                 <h2>Питання 1/6</h2>
                 <p style="font-size: 1.5rem;">Хто є головним "винуватцем" цвітіння води?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми.')">Дрібні риби</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми.')">Підводні камені</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно! Саме ціанобактерії викликають це явище.')">Ціанобактерії</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми.')">Морські моржі</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні, риби навпаки страждають від цього процесу через брак кисню.')">Дрібні риби</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Камені не можуть розмножуватися і викликати цвітіння.')">Підводні камені</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно! Саме ціанобактерії (синьо-зелені водорості) викликають це явище.')">Ціанобактерії</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Моржі живуть у солоних водах і не мають відношення до цвітіння річок.')">Морські моржі</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -356,10 +303,10 @@
                 <h2>Питання 2/6</h2>
                 <p style="font-size: 1.5rem;">Що створюють водорості на поверхні, блокуючи сонце?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Крижаний панцир</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Вірно! Ця плівка не дає світлу потрапити до рослин.')">Щільну "ковдру" або плівку</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Електричне поле</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Кораловий риф</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Цвітіння відбувається влітку, коли лід тане.')">Крижаний панцир</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Вірно! Ця щільна плівка діє як екран, що не пропускає світло на глибину.')">Щільну "ковдру" або плівку</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Бактерії не мають здатності створювати електрику.')">Електричне поле</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Корали — це живі організми океану, а не плівка водоростей у річці.')">Кораловий риф</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -371,10 +318,10 @@
                 <h2>Питання 3/6</h2>
                 <p style="font-size: 1.5rem;">Яка речовина з порошків є "супер-їжею" для бактерій?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — головний стимулятор.')">Сода</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — головний стимулятор.')">Ароматизатори</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Саме так! Фосфати стимулюють вибуховий ріст.')">Фосфати</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — головний стимулятор.')">Відбілювач</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Сода не є основним джерелом живлення для бактерій.')">Сода</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ароматизатори впливають на запах, але не на ріст бактерій.')">Ароматизатори</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Саме так! Фосфати стимулюють вибуховий ріст водоростей (1г фосфатів = 10кг водоростей).')">Фосфати</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Відбілювач скоріше пригнічує життя, але не є основною причиною масового цвітіння.')">Відбілювач</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -386,10 +333,10 @@
                 <h2>Питання 4/6</h2>
                 <p style="font-size: 1.5rem;">Чому кип'ятіння не рятує "цвілу" воду?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини термостійкі.')">Вода стає гарячою</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Точно! Токсини бактерій витримують температуру 100°C.')">Токсини не руйнуються при 100°C</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини термостійкі.')">Бактерії люблять окріп</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини термостійкі.')">Зникає кисень</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Проблема не в температурі, а в хімічному складі води.')">Вода стає гарячою</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Точно! Мікроцистини та інші токсини є термостійкими і витримують температуру кипіння.')">Токсини не руйнуються при 100°C</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Кип\'ятіння вбиває бактерії, але залишає їхні небезпечні токсини.')">Бактерії люблять окріп</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Кисень зникає, але головна загроза — це стійка отрута.')">Зникає кисень</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -401,10 +348,10 @@
                 <h2>Питання 5/6</h2>
                 <p style="font-size: 1.5rem;">Що відбувається з рибою, коли водорості гниють?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона швидше росте</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона змінює колір</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно. Кисень витрачається на гниття, риба задихається.')">Гине через брак кисню</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона їх їсть</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Умови гниття є смертельними для будь-якого росту.')">Вона швидше росте</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Зміна кольору не є головною проблемою для виживання.')">Вона змінює колір</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно. Процес гниття споживає весь кисень у воді, і риба просто задихається.')">Гине через брак кисню</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ці водорості є токсичними, і риба не може ними харчуватися.')">Вона їх їсть</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -416,10 +363,10 @@
                 <h2>Питання 6/6</h2>
                 <p style="font-size: 1.5rem;">Який напис на упаковці побутової хімії допоможе річкам?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Для ручного прання</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Ефект свіжості</button>
-                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Абсолютно! Безфосфатні засоби рятують екологію.')">Без фосфатів</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Велика упаковка</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Тип прання не впливає на склад води, якщо засіб містить фосфати.')">Для ручного прання</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це рекламний хід, який не гарантує екологічну безпеку.')">Ефект свіжості</button>
+                    <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Абсолютно! Використання безфосфатних засобів — це найпростіший крок для порятунку річок.')">Без фосфатів</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Кількість порошку не змінить факт наявності шкідливих речовин у ньому.')">Велика упаковка</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай далі для висновків ↓</div>
@@ -429,20 +376,10 @@
         <section class="quiz-section" id="solution-slide" style="display:none;">
             <div class="quiz-container" style="max-width: 1200px;">
                 <h2>Як ми можемо це зупинити?</h2>
-                <p style="margin-bottom: 30px;">Прості дії, що рятують цілі екосистеми:</p>
                 <div class="final-grid">
-                    <div class="final-card">
-                        <h3>0% Фосфатів</h3>
-                        <p>Купуйте лише безфосфатну хімію. Це позбавляє бактерії їхнього головного "палива" для розмноження.</p>
-                    </div>
-                    <div class="final-card">
-                        <h3>Живий берег</h3>
-                        <p>Дерева та кущі вздовж берега затримують бруд та добрива, працюючи як природний фільтр води.</p>
-                    </div>
-                    <div class="final-card">
-                        <h3>Еко-свідомість</h3>
-                        <p>Розкажіть друзям про проблему. Чим більше людей відмовляться від фосфатів, тим швидше очистяться річки.</p>
-                    </div>
+                    <div class="final-card"><h3>0% Фосфатів</h3><p>Уважно читайте етикетки та купуйте лише безфосфатну побутову хімію. Це позбавляє бактерії їхнього головного "палива" і зупиняє розмноження.</p></div>
+                    <div class="final-card"><h3>Живий берег</h3><p>Бережіть рослинність біля води. Дерева та кущі вздовж берега створюють природний фільтр, який затримує бруд та зайві добрива з полів.</p></div>
+                    <div class="final-card"><h3>Еко-свідомість</h3><p>Розкажіть друзям та знайомим про проблему фосфатів. Масовий перехід на екологічні засоби змусить виробників змінити склад продукції.</p></div>
                 </div>
             </div>
         </section>
@@ -452,44 +389,38 @@
                 <h1>Майбутнє річок —</h1>
                 <h1 style="color: var(--accent);">у твоїх руках</h1>
             </div>
-            <p style="max-width: 600px; margin-top: 20px; text-align: center;">Екологія починається з вибору кожного з нас. Збережемо живу воду разом.</p>
             <button class="restart-btn" onclick="location.reload()">Повернутися до початку</button>
         </section>
     </div>
 
     <script>
-        // ЛОГІКА ЦЕНТРУВАННЯ КВАДРАТИКІВ ТА ЗАТЕМНЕННЯ
         function toggleCenter(element) {
             const isCentered = element.classList.contains('centered');
+            const parentBox = element.closest('.content-box');
             
-            document.querySelectorAll('.info-item').forEach(item => {
-                item.classList.remove('centered');
-            });
-            document.body.classList.remove('dimmed');
+            document.querySelectorAll('.info-item').forEach(item => item.classList.remove('centered'));
+            document.querySelectorAll('.content-box').forEach(box => box.classList.remove('item-active'));
 
             if (!isCentered) {
                 element.classList.add('centered');
-                document.body.classList.add('dimmed');
+                parentBox.classList.add('item-active');
             }
         }
 
-        // Закриваємо при кліку по затемненому фону або самій картці
-        document.querySelector('.overlay-black').addEventListener('click', () => {
-            document.querySelectorAll('.info-item').forEach(item => {
-                item.classList.remove('centered');
-            });
-            document.body.classList.remove('dimmed');
-        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.info-item')) {
+                document.querySelectorAll('.info-item').forEach(item => item.classList.remove('centered'));
+                document.querySelectorAll('.content-box').forEach(box => box.classList.remove('item-active'));
+            }
+        }, true);
 
-        // ГЕНЕРАЦІЯ БУЛЬБАШОК
         function createBubbles() {
             const container = document.getElementById('bubbles');
             for(let i = 0; i < 20; i++) {
                 const bubble = document.createElement('div');
                 bubble.className = 'bubble';
                 const size = Math.random() * 15 + 5 + 'px';
-                bubble.style.width = size;
-                bubble.style.height = size;
+                bubble.style.width = size; bubble.style.height = size;
                 bubble.style.left = Math.random() * 100 + '%';
                 bubble.style.animationDelay = Math.random() * 15 + 's';
                 container.appendChild(bubble);
@@ -507,45 +438,22 @@
                 }
             });
         }, { threshold: 0.5 });
-
         document.querySelectorAll('section').forEach(s => observer.observe(s));
 
-        function startQuizMechanics() {
-            document.getElementById('quiz-progress-bar').style.display = 'block';
-            ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).style.display = 'none');
-            window.scrollTo(0, 0);
-            document.body.style.overflow = "hidden"; 
-        }
-
         function checkAnswer(btn, isCorrect, explanation) {
-            if (document.getElementById('s1').style.display !== 'none') startQuizMechanics();
-
+            document.getElementById('quiz-progress-bar').style.display = 'block';
             const parent = btn.closest('.quiz-section');
             const feedback = parent.querySelector('.feedback-box');
-            const hint = parent.querySelector('.scroll-hint');
             const btns = parent.querySelectorAll('.option-btn');
-
             btns.forEach(b => b.disabled = true);
-
-            if (isCorrect) {
-                btn.classList.add('correct');
-                feedback.style.background = "rgba(0, 255, 136, 0.1)";
-                feedback.innerHTML = `<h3 style="color:var(--correct)">Вірно!</h3><p>${explanation}</p>`;
-            } else {
-                btn.classList.add('wrong');
-                parent.querySelector('[data-correct="true"]').classList.add('correct');
-                feedback.style.background = "rgba(255, 77, 77, 0.1)";
-                feedback.innerHTML = `<h3 style="color:var(--wrong)">Неправильно...</h3><p>${explanation}</p>`;
-            }
-
+            btn.classList.add(isCorrect ? 'correct' : 'wrong');
+            feedback.innerHTML = `<h3>${isCorrect ? 'Вірно!' : 'Неправильно...'}</h3><p>${explanation}</p>`;
             feedback.style.display = 'block';
-            hint.style.display = 'block';
-            document.body.style.overflow = "auto";
-
+            parent.querySelector('.scroll-hint').style.display = 'block';
+            
             const qNum = parseInt(parent.dataset.q);
-            if (qNum < 6) {
-                document.getElementById(`q${qNum + 1}`).style.display = 'flex';
-            } else if (qNum === 6) {
+            if (qNum < 6) document.getElementById(`q${qNum + 1}`).style.display = 'flex';
+            else {
                 document.getElementById('solution-slide').style.display = 'flex';
                 document.getElementById('final-slide').style.display = 'flex';
             }
