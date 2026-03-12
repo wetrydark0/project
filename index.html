@@ -31,104 +31,221 @@
 
         /* --- ФОН --- */
         .ocean-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -10;
             background: linear-gradient(180deg, #05192d, #010811, #0a243d);
-            background-size: 100% 300%; animation: oceanFlow 10s ease infinite;
+            background-size: 100% 300%;
+            animation: oceanFlow 10s ease infinite;
         }
+
         .bg-rays {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -9;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -9;
             background: radial-gradient(circle at 50% -10%, rgba(0, 212, 255, 0.2) 0%, transparent 60%);
-            pointer-events: none; animation: raysPulse 6s ease-in-out infinite;
+            pointer-events: none;
+            animation: raysPulse 6s ease-in-out infinite;
         }
-        .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -8; pointer-events: none; }
-        .bubble { position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: bubbleUp 8s linear infinite; }
 
-        @keyframes oceanFlow { 0% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } 100% { background-position: 0% 0%; } }
-        @keyframes raysPulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
-        @keyframes bubbleUp { 0% { transform: translateY(0) scale(1); opacity: 0; } 10% { opacity: 0.4; } 90% { opacity: 0.4; } 100% { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
+        .bubbles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -8;
+            pointer-events: none;
+        }
 
-        .snap-container { height: 100vh; overflow-y: auto; scroll-snap-type: y mandatory; position: relative; z-index: 1; }
+        .bubble {
+            position: absolute;
+            bottom: -20px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: bubbleUp 8s linear infinite;
+        }
+
+        @keyframes oceanFlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes raysPulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes bubbleUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+        }
+
+        .snap-container {
+            height: 100vh;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+            position: relative;
+            z-index: 1;
+        }
 
         #quiz-progress-bar {
-            position: fixed; top: 0; left: 0; height: 5px; width: 0%;
-            background: var(--accent); box-shadow: 0 0 15px var(--accent);
-            z-index: 1000; transition: width 0.5s ease; display: none;
+            position: fixed;
+            top: 0; left: 0; height: 5px;
+            width: 0%; background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+            z-index: 1000;
+            transition: width 0.5s ease;
+            display: none;
         }
 
-        section { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; scroll-snap-align: start; position: relative; padding: 20px; }
+        #flash-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: start;
+            position: relative;
+            padding: 20px;
+            background: transparent;
+        }
+
+        .hero-title-wrap { position: relative; padding: 40px; text-align: center; }
+        .hero-title-wrap::before, .hero-title-wrap::after {
+            content: ''; position: absolute; width: 60px; height: 60px;
+            border: 2px solid var(--accent); filter: drop-shadow(0 0 10px var(--accent));
+        }
+        .hero-title-wrap::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .hero-title-wrap::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .author-wrapper {
+            margin-top: 30px; padding: 10px 25px;
+            border: 1px solid var(--accent); border-radius: 50px;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .authors { display: flex; gap: 30px; }
+        .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; }
 
         .content-box {
-            max-width: 1200px; width: 95%; background: var(--glass-bg); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 30px; padding: 25px 40px;
-            display: flex; gap: 35px; align-items: center; opacity: 0; transform: translateY(30px);
-            transition: all 0.8s ease-out; max-height: 90vh; overflow-y: auto;
+            max-width: 1200px; width: 95%;
+            background: var(--glass-bg); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 30px;
+            padding: 25px 40px; display: flex; gap: 35px;
+            align-items: center; opacity: 0; transform: translateY(30px);
+            transition: all 0.8s ease-out;
+            max-height: 90vh; overflow-y: auto;
         }
 
         section.visible .content-box { opacity: 1; transform: translateY(0); }
         .text-side { flex: 1.7; }
-        .image-side { flex: 1; height: 350px; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); }
+        
+        /* НОВА ЛОГІКА ДЛЯ КАРТИНКИ */
+        .image-side { 
+            flex: 1; 
+            height: 350px; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid var(--glass-border); 
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), position 0.4s;
+            z-index: 5;
+        }
+        
         .image-side img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Стан коли картинка по центру */
+        .image-side.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.5);
+            width: 80vw;
+            height: auto;
+            max-height: 80vh;
+            z-index: 2000;
+            box-shadow: 0 0 100px rgba(0,0,0,0.8);
+        }
+
+        /* Затемнення при кліку на фото */
+        .img-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
         h2 { font-size: 1.8rem; color: #fff; margin-bottom: 12px; text-transform: uppercase; text-shadow: 0 0 10px var(--accent-glow); }
-        p { font-size: 1rem; line-height: 1.6; margin-bottom: 12px; text-align: justify; color: #d1d9e0; }
+        p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; text-align: justify; color: #d1d9e0; }
         .highlight { color: var(--accent); font-weight: bold; }
 
-        /* --- S3 КАРТКИ (ВИПРАВЛЕНО) --- */
-        .grid-info { display: flex; justify-content: center; gap: 15px; margin-top: 20px; width: 100%; }
-        .info-item { 
-            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); 
-            flex: 1; cursor: pointer; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); position: relative; z-index: 1;
-        }
-        .info-item h3 { color: var(--accent); margin-bottom: 10px; font-size: 1.2rem; text-align: center; }
-        .info-item .short-desc { font-size: 0.9rem; text-align: center; color: #ccc; }
-        .info-item .extra-text { display: none; margin-top: 20px; font-size: 1.1rem; color: #fff; text-align: left; line-height: 1.7; }
+        .grid-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; width: 100%; }
+        .info-item { background: rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .info-item h3 { color: var(--accent); margin-bottom: 8px; font-size: 1.1rem; text-align: center; }
+        .info-item p { font-size: 0.8rem; line-height: 1.4; text-align: center; margin-bottom: 0; }
 
-        #s3-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9); z-index: 50; opacity: 0; pointer-events: none; transition: 0.5s;
-        }
-        #s3-overlay.active { opacity: 1; pointer-events: all; }
-
-        .info-item.expanded {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.05);
-            width: 700px; max-width: 90vw; z-index: 100; background: #0a192f; border-color: var(--accent);
-            box-shadow: 0 0 40px var(--accent-glow); padding: 40px; cursor: default;
-        }
-        .info-item.expanded .extra-text { display: block; }
-        .info-item.expanded h3 { font-size: 2.2rem; }
-        .info-item.expanded .short-desc { display: none; }
-
-        .s3-content-wrapper.hidden-elements > h2, .s3-content-wrapper.hidden-elements > p, .info-item.not-active { opacity: 0; pointer-events: none; }
-
-        /* --- ВІКТОРИНА --- */
-        .quiz-section { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         .quiz-container { text-align: center; max-width: 800px; width: 100%; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .option-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 20px; border-radius: 15px; color: #fff; cursor: pointer; transition: 0.3s; }
-        .option-btn:hover { border-color: var(--accent); }
+        .option-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            padding: 20px; border-radius: 15px; color: #fff; cursor: pointer; transition: 0.3s;
+        }
+        .option-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
         .option-btn.correct { background: rgba(0, 255, 136, 0.2); border-color: var(--correct); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
         .option-btn.wrong { background: rgba(255, 77, 77, 0.2); border-color: var(--wrong); box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
-        .feedback-box { margin-top: 25px; padding: 20px; border-radius: 15px; display: none; animation: fadeIn 0.5s; background: rgba(255,255,255,0.05); }
+
+        .feedback-box { margin-top: 25px; padding: 20px; border-radius: 15px; display: none; animation: fadeIn 0.5s; }
         .scroll-hint { margin-top: 20px; font-weight: bold; color: var(--accent); animation: bounce 2s infinite; display: none; }
-
-        /* --- ТИТРИ --- */
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 900; text-transform: uppercase; text-shadow: 0 0 20px var(--accent-glow); text-align: center; }
-        .author-wrapper { margin-top: 30px; padding: 10px 25px; border: 1px solid var(--accent); border-radius: 50px; background: rgba(0, 212, 255, 0.05); }
-        .authors { display: flex; gap: 30px; }
-        .author-card span { font-size: 10px; color: var(--accent); display: block; text-transform: uppercase; }
-
-        .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1100px; margin-top: 30px; }
-        .final-card { background: var(--glass-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; }
-        .final-card h3 { color: var(--accent); margin-bottom: 15px; text-transform: uppercase; }
-        .restart-btn { margin-top: 40px; padding: 15px 40px; border: 1px solid var(--accent); background: transparent; color: var(--accent); border-radius: 50px; cursor: pointer; font-weight: bold; }
-
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        .quiz-section { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
+        
+        .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1100px; margin-top: 30px; }
+        .final-card {
+            background: var(--glass-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border);
+            text-align: center; transition: 0.3s;
+        }
+        .final-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .final-card h3 { color: var(--accent); margin-bottom: 15px; text-transform: uppercase; }
+        .final-card p { text-align: center; font-size: 0.9rem; margin-bottom: 0; }
+        
+        .restart-btn {
+            margin-top: 40px; padding: 15px 40px; border: 1px solid var(--accent);
+            background: transparent; color: var(--accent); border-radius: 50px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            font-weight: bold; transition: 0.3s;
+        }
+        .restart-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
     </style>
 </head>
 <body>
 
     <div id="quiz-progress-bar"></div>
-    <div id="s3-overlay" onclick="closeAllCards()"></div>
+    <div id="flash-overlay"></div>
+    <div class="img-overlay" id="img-overlay"></div>
     
     <div class="ocean-bg"></div>
     <div class="bg-rays"></div>
@@ -137,7 +254,7 @@
     <div class="snap-container" id="main-scroll">
         <section class="hero visible" id="s1">
             <div class="hero-title-wrap">
-                <p style="letter-spacing: 10px; color: var(--accent); margin-bottom: 10px; font-size: 0.8rem; text-align: center;">НАУКОВИЙ ПРОЄКТ</p>
+                <p style="letter-spacing: 10px; color: var(--accent); margin-bottom: 10px; font-size: 0.8rem;">НАУКОВИЙ ПРОЄКТ</p>
                 <h1>Цвітіння води</h1>
             </div>
             <div class="author-wrapper">
@@ -152,42 +269,34 @@
             <div class="content-box">
                 <div class="text-side">
                     <h2>Що це за явище?</h2>
-                    <p>Масове розмноження <span class="highlight">ціанобактерій</span> — це не просто зміна естетичного вигляду водойми. Ці мікроорганізми існують мільярди років, але за певних умов їх чисельність зростає вибухоподібно, перетворюючи прозору воду на густу "зелену кашу".</p>
+                    <p>Масове розмноження <span class="highlight">ціанобактерій</span> (синьо-зелених водоростей) — це не просто зміна естетичного вигляду водойми. Ці мікроорганізми існують мільярди років, але за певних умов їх чисельність зростає вибухоподібно, перетворюючи прозору воду на густу "зелену кашу".</p>
                     <p>Щільна плівка на поверхні діє як сонячний екран. Вона повністю блокує доступ світла до глибинних шарів, через що підводні рослини втрачають можливість фотосинтезувати. Замість того, щоб виробляти кисень, вони починають масово вмирати та розкладатися прямо в товщі води.</p>
                     <p>Найстрашніше відбувається вночі: самі бактерії починають активно поглинати залишки кисню для дихання. Це призводить до явища "замору" — масової загибелі риб, молюсків та ракоподібних, які буквально задихаються у власній домівці.</p>
                 </div>
-                <div class="image-side"><img src="Images1/mikro.jpg" alt="Мікро"></div>
+                <div class="image-side" onclick="zoomImage(this)">
+                    <img src="Images1/mikro.jpg" alt="Цвітіння під мікроскопом">
+                </div>
             </div>
         </section>
 
         <section id="s3">
             <div class="content-box" style="flex-direction: column;">
-                <div class="s3-content-wrapper" id="s3-main">
+                <div style="text-align: center; max-width: 1000px;">
                     <h2>Чому це відбувається?</h2>
-                    <p style="text-align: center; max-width: 1000px; margin: 0 auto 20px;">Цвітіння не є випадковістю — це результат порушення біологічного балансу. Головним паливом для цього процесу є <span class="highlight">евтрофікація</span>: перенасичення води азотом та фосфором.</p>
-                    
-                    <div class="grid-info">
-                        <div class="info-item" onclick="expandCard(this)">
-                            <h3>Побутова хімія</h3>
-                            <p class="short-desc">Фосфати у пральних засобах — головне "паливо" для бактерій.</p>
-                            <div class="extra-text">
-                                Більшість пральних порошків містять фосфати, які не затримуються очисними спорудами. 1 грам такої сполуки провокує ріст 10-15 кг водоростей. Це мільйони тонн біомаси щороку, які потрапляють у наші річки через звичайне прання та миття посуду.
-                            </div>
-                        </div>
-                        <div class="info-item" onclick="expandCard(this)">
-                            <h3>Сільське господарство</h3>
-                            <p class="short-desc">Змивання добрив з полів під час дощів.</p>
-                            <div class="extra-text">
-                                Надлишок мінеральних добрив змивається з полів під час дощів і стікає в річки. Цей постійний "потік поживних речовин" підтримує цвітіння навіть тоді, коли інші умови стають несприятливими, створюючи нескінченний цикл забруднення.
-                            </div>
-                        </div>
-                        <div class="info-item" onclick="expandCard(this)">
-                            <h3>Глобальне потепління</h3>
-                            <p class="short-desc">Висока температура води — ідеальний інкубатор.</p>
-                            <div class="extra-text">
-                                Через будівництво дамб та гребель швидкість течії падає, вода застоюється і прогрівається швидше. Тепла вода з низьким вмістом кисню є ідеальним середовищем для вибухового росту ціанобактерій.
-                            </div>
-                        </div>
+                    <p style="text-align: center;">Цвітіння не є випадковістю — це результат порушення біологічного балансу. Головним паливом для цього процесу є <span class="highlight">евтрофікація</span>: перенасичення води азотом та фосфором.</p>
+                </div>
+                <div class="grid-info">
+                    <div class="info-item">
+                        <h3>Побутова хімія</h3>
+                        <p>1 грам фосфатів провокує ріст 10-15 кг водоростей. Більшість порошків містять ці сполуки, які не фільтруються.</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Добрива</h3>
+                        <p>Надлишок мінералів змивається з полів під час дощів і стікає в річки, підтримуючи цвітіння.</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Тепло</h3>
+                        <p>Висока температура — ідеальний інкубатор. Через дамби течія падає, а вода прогрівається швидше.</p>
                     </div>
                 </div>
             </div>
@@ -195,12 +304,13 @@
 
         <section id="s4">
             <div class="content-box">
-                <div class="image-side"><img src="Images1/voda.jpg" alt="Вода"></div>
+                <div class="image-side" onclick="zoomImage(this)">
+                    <img src="Images1/voda.jpg" alt="Забруднена вода">
+                </div>
                 <div class="text-side">
                     <h2>Приховані загрози</h2>
-                    <p>Крім візуального забруднення, ціанобактерії виробляють небезпечні <span class="highlight">мікроцистини</span>. Ці біологічні токсини вражають шкіру, печінку та нервову систему людей і тварин. Купання в такій воді часто закінчується важкими алергічними реакціями.</p>
-                    <p>У процесі гниття величезної маси водоростей у воду виділяються аміак, метан та сірководень. Ці гази мають різкий неприємний запах і роблять воду токсичною. Худоба та дикі тварини ризикують загинути від гострої інтоксикації.</p>
-                    <p>Звичайне кип'ятіння води не вирішує проблему — воно вбиває бактерії, але залишає їхні отруйні сполуки активними, оскільки токсини ціанобактерій термостійкі.</p>
+                    <p>Ціанобактерії виробляють небезпечні <span class="highlight">мікроцистини</span>. Ці токсини вражають шкіру, печінку та нервову систему. Купання в такій воді може закінчуватися важкими отруєннями.</p>
+                    <p>У процесі гниття виділяються аміак та сірководень. Звичайне кип'ятіння води вдома не вирішує проблему — воно вбиває бактерії, але залишає їхні отруйні сполуки активними.</p>
                 </div>
             </div>
         </section>
@@ -210,10 +320,10 @@
                 <h2>Питання 1/6</h2>
                 <p style="font-size: 1.5rem;">Хто є головним "винуватцем" цвітіння води?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні, це мікроорганізми.')">Дрібні риби</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Підводні камені</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми.')">Дрібні риби</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми.')">Підводні камені</button>
                     <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно! Саме ціанобактерії викликають це явище.')">Ціанобактерії</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Морські моржі</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це мікроскопічні організми.')">Морські моржі</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -227,8 +337,8 @@
                 <div class="options-grid">
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Крижаний панцир</button>
                     <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Вірно! Ця плівка не дає світлу потрапити до рослин.')">Щільну "ковдру" або плівку</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Електричне поле</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Кораловий риф</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Електричне поле</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Вони утворюють щільну плівку.')">Кораловий риф</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -241,9 +351,9 @@
                 <p style="font-size: 1.5rem;">Яка речовина з порошків є "супер-їжею" для бактерій?</p>
                 <div class="options-grid">
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — головний стимулятор.')">Сода</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Ароматизатори</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — головний стимулятор.')">Ароматизатори</button>
                     <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Саме так! Фосфати стимулюють вибуховий ріст.')">Фосфати</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Відбілювач</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Фосфати — головний стимулятор.')">Відбілювач</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -257,8 +367,8 @@
                 <div class="options-grid">
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини термостійкі.')">Вода стає гарячою</button>
                     <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Точно! Токсини бактерій витримують температуру 100°C.')">Токсини не руйнуються при 100°C</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Бактерії люблять окріп</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Зникає кисень</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини термостійкі.')">Бактерії люблять окріп</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Токсини термостійкі.')">Зникає кисень</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -271,9 +381,9 @@
                 <p style="font-size: 1.5rem;">Що відбувається з рибою, коли водорості гниють?</p>
                 <div class="options-grid">
                     <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона швидше росте</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Вона змінює колір</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона змінює колір</button>
                     <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Правильно. Кисень витрачається на гниття, риба задихається.')">Гине через брак кисню</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Вона їх їсть</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Гниття забирає кисень.')">Вона їх їсть</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай вниз ↓</div>
@@ -285,10 +395,10 @@
                 <h2>Питання 6/6</h2>
                 <p style="font-size: 1.5rem;">Який напис на упаковці побутової хімії допоможе річкам?</p>
                 <div class="options-grid">
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Шукайте склад.')">Для ручного прання</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Ефект свіжості</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Для ручного прання</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Ефект свіжості</button>
                     <button class="option-btn" data-correct="true" onclick="checkAnswer(this, true, 'Абсолютно! Безфосфатні засоби рятують екологію.')">Без фосфатів</button>
-                    <button class="option-btn" onclick="checkAnswer(this, false, 'Ні.')">Велика упаковка</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false, 'Це найпростіший спосіб.')">Велика упаковка</button>
                 </div>
                 <div class="feedback-box"></div>
                 <div class="scroll-hint">Гортай далі для висновків ↓</div>
@@ -299,38 +409,46 @@
             <div class="quiz-container" style="max-width: 1200px;">
                 <h2>Як ми можемо це зупинити?</h2>
                 <div class="final-grid">
-                    <div class="final-card"><h3>0% Фосфатів</h3><p>Купуйте лише безфосфатну хімію. Це позбавляє бактерії головного палива.</p></div>
-                    <div class="final-card"><h3>Живий берег</h3><p>Рослини вздовж берега затримують добрива, працюючи як природний фільтр.</p></div>
-                    <div class="final-card"><h3>Свідомість</h3><p>Розкажіть друзям. Чим більше людей відмовляться від фосфатів, тим краще.</p></div>
+                    <div class="final-card"><h3>0% Фосфатів</h3><p>Купуйте лише безфосфатну хімію. Це позбавляє бактерії палива.</p></div>
+                    <div class="final-card"><h3>Живий берег</h3><p>Рослини вздовж берега затримують бруд, працюючи як фільтр.</p></div>
+                    <div class="final-card"><h3>Еко-свідомість</h3><p>Розкажіть друзям. Чим більше людей знають — тим чистіші річки.</p></div>
                 </div>
             </div>
         </section>
 
         <section class="quiz-section" id="final-slide" style="display:none; text-align: center;">
-            <h1>Майбутнє річок — у твоїх руках</h1>
+            <div class="hero-title-wrap">
+                <h1>Майбутнє річок —</h1>
+                <h1 style="color: var(--accent);">у твоїх руках</h1>
+            </div>
             <button class="restart-btn" onclick="location.reload()">Повернутися до початку</button>
         </section>
     </div>
 
     <script>
-        // ЛОГІКА КАРТОК S3
-        function expandCard(card) {
-            const overlay = document.getElementById('s3-overlay');
-            const mainContent = document.getElementById('s3-main');
-            const allCards = document.querySelectorAll('.info-item');
-            if (card.classList.contains('expanded')) { closeAllCards(); return; }
-            overlay.classList.add('active');
-            mainContent.classList.add('hidden-elements');
-            allCards.forEach(c => {
-                if (c === card) { c.classList.add('expanded'); c.classList.remove('not-active'); } 
-                else { c.classList.add('not-active'); }
-            });
+        // ЛОГІКА ЗБІЛЬШЕННЯ КАРТИНКИ
+        const overlay = document.getElementById('img-overlay');
+        let currentExpanded = null;
+
+        function zoomImage(el) {
+            if (el.classList.contains('expanded')) {
+                closeImage();
+            } else {
+                el.classList.add('expanded');
+                overlay.style.display = 'block';
+                currentExpanded = el;
+            }
         }
-        function closeAllCards() {
-            document.getElementById('s3-overlay').classList.remove('active');
-            document.getElementById('s3-main').classList.remove('hidden-elements');
-            document.querySelectorAll('.info-item').forEach(c => c.classList.remove('expanded', 'not-active'));
+
+        function closeImage() {
+            if (currentExpanded) {
+                currentExpanded.classList.remove('expanded');
+                overlay.style.display = 'none';
+                currentExpanded = null;
+            }
         }
+
+        overlay.onclick = closeImage;
 
         // БУЛЬБАШКИ
         function createBubbles() {
@@ -347,7 +465,6 @@
         }
         createBubbles();
 
-        // QUIZ LOGIC
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -358,20 +475,22 @@
                 }
             });
         }, { threshold: 0.5 });
+
         document.querySelectorAll('section').forEach(s => observer.observe(s));
 
+        function startQuizMechanics() {
+            document.getElementById('quiz-progress-bar').style.display = 'block';
+            ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).style.display = 'none');
+            window.scrollTo(0, 0);
+        }
+
         function checkAnswer(btn, isCorrect, explanation) {
-            if (document.getElementById('s1').style.display !== 'none') {
-                document.getElementById('quiz-progress-bar').style.display = 'block';
-                ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).style.display = 'none');
-            }
+            if (document.getElementById('s1').style.display !== 'none') startQuizMechanics();
             const parent = btn.closest('.quiz-section');
             const feedback = parent.querySelector('.feedback-box');
             const hint = parent.querySelector('.scroll-hint');
             const btns = parent.querySelectorAll('.option-btn');
             btns.forEach(b => b.disabled = true);
-            feedback.style.display = 'block';
-            hint.style.display = 'block';
             if (isCorrect) {
                 btn.classList.add('correct');
                 feedback.innerHTML = `<h3 style="color:var(--correct)">Вірно!</h3><p>${explanation}</p>`;
@@ -380,9 +499,10 @@
                 parent.querySelector('[data-correct="true"]').classList.add('correct');
                 feedback.innerHTML = `<h3 style="color:var(--wrong)">Неправильно...</h3><p>${explanation}</p>`;
             }
+            feedback.style.display = 'block'; hint.style.display = 'block';
             const qNum = parseInt(parent.dataset.q);
             if (qNum < 6) document.getElementById(`q${qNum + 1}`).style.display = 'flex';
-            else { 
+            else {
                 document.getElementById('solution-slide').style.display = 'flex';
                 document.getElementById('final-slide').style.display = 'flex';
             }
